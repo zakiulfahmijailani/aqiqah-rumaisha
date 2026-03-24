@@ -6,7 +6,7 @@ import CoverSection from '@/components/CoverSection';
 import BabyNamesSection from '@/components/BabyNamesSection';
 import EventDetailsSection from '@/components/EventDetailsSection';
 import MapsSection from '@/components/MapsSection';
-import GiftSection from '@/components/GiftSection';
+
 import MusicPlayer from '@/components/MusicPlayer';
 import WishesSection from '@/components/WishesSection';
 import ClosingSection from '@/components/ClosingSection';
@@ -79,12 +79,7 @@ export default function Home() {
           <MapsSection />
         </section>
 
-        <WaveDivider fillColor="#FFF8E7" variant="double" />
 
-        {/* Gift Section */}
-        <section>
-          <GiftSection />
-        </section>
 
         <WaveDivider fillColor="#F5F0FF" variant="sine" />
 

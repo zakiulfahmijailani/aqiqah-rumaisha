@@ -75,7 +75,7 @@ export default function ClosingSection() {
             }}
           />
           <h4 className="font-headline text-3xl md:text-4xl text-primary relative">
-            Keluarga Besar Zakiul &amp; Tri Rachmat
+            Keluarga Besar Zakiul Fahmi Jailani &amp; Tri Rachmat Riski
           </h4>
         </motion.div>
 

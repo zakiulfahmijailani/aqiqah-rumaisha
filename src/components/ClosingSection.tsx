@@ -54,7 +54,7 @@ export default function ClosingSection() {
           transition={{ duration: 0.8 }}
         >
           Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i
-          berkenan hadir untuk memberikan doa restu kepada putra-putri kami. Atas kehadiran
+          berkenan hadir untuk memberikan doa restu kepada putra kami. Atas kehadiran
           dan doa restunya, kami ucapkan terima kasih.
         </motion.p>
 
@@ -75,7 +75,7 @@ export default function ClosingSection() {
             }}
           />
           <h4 className="font-headline text-3xl md:text-4xl text-primary relative">
-            Keluarga Besar Zakiul Fahmi Jailani &amp; Tri Rachmat Riski
+            Keluarga Besar Zakiul Fahmi Jailani &amp; Kemala Putri Ayunda
           </h4>
         </motion.div>
 

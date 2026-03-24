@@ -142,7 +142,7 @@ export default function EventDetailsSection() {
           </div>
           <h4 className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2">Waktu Acara</h4>
           <p className="font-headline text-2xl text-on-surface">13:00 – 17:00 WIB</p>
-          <p className="text-sm text-secondary mt-2 italic">Diharapkan hadir tepat waktu</p>
+
         </motion.div>
 
         {/* Location Card */}
@@ -159,7 +159,7 @@ export default function EventDetailsSection() {
             </div>
             <div>
               <h4 className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2">Tempat &amp; Alamat</h4>
-              <p className="font-headline text-xl text-primary mb-1">Kediaman Keluarga Bapak Syafruddin Sulaiman</p>
+
               <p className="text-secondary text-sm max-w-xs">
                 Wisma Indah VI Blok i no 2, balai baru,
                 Kel. Kalumbuk, Kec. Kuranji,

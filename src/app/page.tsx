@@ -6,6 +6,7 @@ import CoverSection from '@/components/CoverSection';
 import BabyNamesSection from '@/components/BabyNamesSection';
 import EventDetailsSection from '@/components/EventDetailsSection';
 import MapsSection from '@/components/MapsSection';
+import RSVPSection from '@/components/RSVPSection';
 
 import MusicPlayer from '@/components/MusicPlayer';
 import WishesSection from '@/components/WishesSection';
@@ -44,14 +45,14 @@ export default function Home() {
           {/* Main text */}
           <div className="max-w-xl mx-auto text-gray-600 text-sm md:text-base leading-relaxed space-y-4">
             <p>
-              Dengan penuh rasa syukur kehadirat Allah Subhanahu wa Ta'ala
+              Dengan penuh rasa syukur kehadirat Allah Subhanahu wa Ta&apos;ala
               atas segala nikmat dan karunia-Nya, kami mengumumkan
-              dengan penuh kebahagiaan kelahiran dua buah hati kami.
+              dengan penuh kebahagiaan kelahiran putra kami.
             </p>
             <p>
               Sebagai wujud syukur dan mengikuti sunnah Rasulullah ﷺ,
               kami akan menyelenggarakan syukuran Aqiqah untuk
-              putra-putri tercinta kami.
+              putra tercinta kami.
             </p>
             <p>
               Dengan rendah hati, kami mengundang Bapak/Ibu/Saudara/i
@@ -79,7 +80,12 @@ export default function Home() {
           <MapsSection />
         </section>
 
+        <WaveDivider fillColor="#e8f5f0" variant="double" />
 
+        {/* RSVP Section */}
+        <section>
+          <RSVPSection />
+        </section>
 
         <WaveDivider fillColor="#F5F0FF" variant="sine" />
 

@@ -127,96 +127,117 @@ export default function BabyNamesSection() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section className="section-names px-6 py-20 max-w-screen-xl mx-auto flex flex-col items-center text-center relative overflow-hidden">
+    <section
+      className="px-4 py-20 relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #F0FFF4, #E8F8FF)' }}
+    >
       <RainbowArc />
 
-      {/* First name */}
-      <div className="mb-6 relative">
-        {/* Orbiting stars & moons around the name */}
-        <OrbitingIcon radius={60} speed={0.8}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#e9c349" fillOpacity="0.4">
-            <polygon points="12,2 15,10 24,10 17,15 19,24 12,19 5,24 7,15 0,10 9,10" />
-          </svg>
-        </OrbitingIcon>
-        <OrbitingIcon radius={70} speed={-0.5}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#FFB7C5" fillOpacity="0.5">
-            <path d="M12,21 C12,21 3,13 3,8 A5,5,0,0,1,12,5 A5,5,0,0,1,21,8 C21,13 12,21 12,21Z" />
-          </svg>
-        </OrbitingIcon>
+      {/* Two-panel side by side */}
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-6 relative z-10">
 
-        <TypewriterName name="Izhan Faqqihhu Fiddin Zakiul" delay={0.3} />
-        <motion.p
-          className="font-label text-xs tracking-[0.3em] text-secondary uppercase mt-3"
-          initial={prefersReduced ? {} : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 2 }}
+        {/* LEFT — Izhan */}
+        <motion.div
+          className="flex flex-col items-center text-center"
+          initial={prefersReduced ? {} : { opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, type: 'spring' }}
           viewport={{ once: true }}
         >
-          Laki-laki • 15 Mei 2024
-        </motion.p>
-      </div>
+          <div className="relative inline-block mb-4">
+            <OrbitingIcon radius={70} speed={0.4}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#e9c349">
+                <polygon points="12,2 15,10 24,10 17,15 19,24 12,19 5,24 7,15 0,10 9,10" />
+              </svg>
+            </OrbitingIcon>
+            <OrbitingIcon radius={80} speed={-0.3}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="#C7CEEA">
+                <path d="M12,2 A10,10,0,0,0,12,22 A7,7,0,0,1,12,2Z" />
+              </svg>
+            </OrbitingIcon>
+            <h2 className="font-headline text-3xl md:text-4xl text-primary leading-tight">
+              <TypewriterName name="Izhan Faqqihhu Fiddin Zakiul" delay={0} />
+            </h2>
+          </div>
+          <p className="font-label text-xs tracking-widest text-secondary uppercase mb-1">
+            Laki-laki
+          </p>
+          <p className="text-secondary text-sm mb-6">17 Desember 2025</p>
 
-      {/* Ampersand */}
-      <div className="flex items-center justify-center gap-6 my-6 text-tertiary">
-        <div className="h-px w-12 bg-outline-variant/30" />
-        <motion.span
-          className="font-headline italic text-3xl"
-          animate={prefersReduced ? {} : { y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-        >
-          &amp;
-        </motion.span>
-        <div className="h-px w-12 bg-outline-variant/30" />
-      </div>
+          {/* Parents */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-5 shadow-sm w-full">
+            <p className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 italic">
+              Putra Tercinta dari
+            </p>
+            <p className="font-semibold text-gray-800 text-sm leading-relaxed">
+              Bapak Zakiul Fahmi Jailani
+            </p>
+            <p className="text-gray-600 text-sm">&</p>
+            <p className="font-semibold text-gray-800 text-sm leading-relaxed">
+              Ibu Kemala Putri Ayunda
+            </p>
+          </div>
 
-      {/* Second name */}
-      <div className="mb-10 relative">
-        <OrbitingIcon radius={55} speed={0.6}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C7CEEA" fillOpacity="0.5">
-            <path d="M12,2 A10,10,0,0,0,12,22 A7,7,0,0,1,12,2Z" />
-          </svg>
-        </OrbitingIcon>
-        <OrbitingIcon radius={65} speed={-0.7}>
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="#e9c349" fillOpacity="0.4">
-            <polygon points="12,2 15,10 24,10 17,15 19,24 12,19 5,24 7,15 0,10 9,10" />
-          </svg>
-        </OrbitingIcon>
+          {/* Baby items */}
+          <div className="flex gap-4 mt-6 justify-center">
+            <div className="animate-float" style={{ animationDelay: '0s' }}><BabyBottle /></div>
+            <div className="animate-rockCradle" style={{ animationDelay: '0.3s' }}><Cradle /></div>
+          </div>
+        </motion.div>
 
-        <TypewriterName name="Rumaisha Qonita" delay={1.5} />
-        <motion.p
-          className="font-label text-xs tracking-[0.3em] text-secondary uppercase mt-3"
-          initial={prefersReduced ? {} : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 3.5 }}
+        {/* Divider — visible on desktop only */}
+        <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-px bg-gradient-to-b from-transparent via-pink-200 to-transparent" />
+
+        {/* RIGHT — Rumaisha */}
+        <motion.div
+          className="flex flex-col items-center text-center"
+          initial={prefersReduced ? {} : { opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, type: 'spring', delay: 0.2 }}
           viewport={{ once: true }}
         >
-          Perempuan • 15 Mei 2024
-        </motion.p>
-      </div>
+          <div className="relative inline-block mb-4">
+            <OrbitingIcon radius={70} speed={0.5}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB7C5">
+                <path d="M12,21 C12,21 3,13 3,8 A5,5,0,0,1,12,5 A5,5,0,0,1,21,8 C21,13 12,21 12,21Z" />
+              </svg>
+            </OrbitingIcon>
+            <OrbitingIcon radius={80} speed={-0.4}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="#e9c349">
+                <polygon points="12,2 15,10 24,10 17,15 19,24 12,19 5,24 7,15 0,10 9,10" />
+              </svg>
+            </OrbitingIcon>
+            <h2 className="font-headline text-3xl md:text-4xl text-primary leading-tight">
+              <TypewriterName name="Rumaisha Qonita" delay={0.5} />
+            </h2>
+          </div>
+          <p className="font-label text-xs tracking-widest text-secondary uppercase mb-1">
+            Perempuan
+          </p>
+          <p className="text-secondary text-sm mb-6">4 Februari 2026</p>
 
-      {/* Floating baby items */}
-      <div className="flex items-center justify-center gap-8 mb-12 opacity-40">
-        <BabyBottle />
-        <Rattle />
-        <Cradle />
-        <BabyShoes />
-      </div>
+          {/* Parents */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-5 shadow-sm w-full">
+            <p className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 italic">
+              Putri Tercinta dari
+            </p>
+            <p className="font-semibold text-gray-800 text-sm leading-relaxed">
+              Bapak Tri Rachmat Riski
+            </p>
+            <p className="text-gray-600 text-sm">&</p>
+            <p className="font-semibold text-gray-800 text-sm leading-relaxed">
+              Ibu Upita Anggunsuri
+            </p>
+          </div>
 
-      {/* Parents info card */}
-      <motion.div
-        className="bg-surface-container-low/80 backdrop-blur-sm px-10 py-8 rounded-2xl relative overflow-hidden max-w-lg w-full"
-        initial={prefersReduced ? {} : { opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', bounce: 0.3 }}
-        viewport={{ once: true }}
-      >
-        <p className="text-secondary font-body italic mb-2">Putra &amp; Putri Tercinta dari</p>
-        <h3 className="font-headline text-xl text-on-surface leading-relaxed">
-          Bapak Zakiul Fahmi Jailani &amp; Ibu Kemala Putri Ayunda
-          <br />&amp;<br />
-          Bapak Tri Rachmat Riski &amp; Ibu Upita Anggunsuri
-        </h3>
-      </motion.div>
+          {/* Baby items */}
+          <div className="flex gap-4 mt-6 justify-center">
+            <div className="animate-sway" style={{ animationDelay: '0.2s' }}><Rattle /></div>
+            <div className="animate-float" style={{ animationDelay: '0.5s' }}><BabyShoes /></div>
+          </div>
+        </motion.div>
+
+      </div>
     </section>
   );
 }

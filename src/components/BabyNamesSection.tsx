@@ -134,7 +134,7 @@ export default function BabyNamesSection() {
       <RainbowArc />
 
       {/* Two-panel side by side */}
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-6 relative z-10">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-6 relative z-10 items-start">
 
         {/* LEFT — Izhan */}
         <motion.div
@@ -155,8 +155,10 @@ export default function BabyNamesSection() {
                 <path d="M12,2 A10,10,0,0,0,12,22 A7,7,0,0,1,12,2Z" />
               </svg>
             </OrbitingIcon>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary leading-tight">
-              <TypewriterName name="Izhan Faqqihhu Fiddin Zakiul" delay={0} />
+            <h2 className="font-headline text-2xl md:text-3xl text-primary leading-tight px-2">
+              <TypewriterName name="Izhan Faqqihhu" delay={0} />
+              <br />
+              <TypewriterName name="Fiddin Zakiul" delay={0.3} />
             </h2>
           </div>
           <p className="font-label text-xs tracking-widest text-secondary uppercase mb-1">
@@ -207,7 +209,7 @@ export default function BabyNamesSection() {
                 <polygon points="12,2 15,10 24,10 17,15 19,24 12,19 5,24 7,15 0,10 9,10" />
               </svg>
             </OrbitingIcon>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary leading-tight">
+            <h2 className="font-headline text-2xl md:text-3xl text-primary leading-tight px-2">
               <TypewriterName name="Rumaisha Qonita" delay={0.5} />
             </h2>
           </div>

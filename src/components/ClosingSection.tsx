@@ -22,13 +22,9 @@ function PaperLanterns() {
           }}
         >
           <svg width="28" height="42" viewBox="0 0 28 42" style={{ opacity: 0.15 }}>
-            {/* Lantern body (trapezoid) */}
             <path d="M6,8 L4,32 A4,4,0,0,0,8,36 L20,36 A4,4,0,0,0,24,32 L22,8Z" fill={color} />
-            {/* Top ring */}
             <rect x="10" y="4" width="8" height="6" rx="2" fill={color} opacity="0.7" />
-            {/* String */}
             <line x1="14" y1="0" x2="14" y2="4" stroke={color} strokeWidth="1" opacity="0.5" />
-            {/* Glow */}
             <ellipse cx="14" cy="22" rx="6" ry="8" fill="#fffbe6" opacity="0.4" />
           </svg>
         </div>
@@ -66,7 +62,6 @@ export default function ClosingSection() {
           viewport={{ once: true }}
           transition={{ type: 'spring', bounce: 0.3, delay: 0.2 }}
         >
-          {/* Soft halo */}
           <div
             className="absolute inset-0 rounded-full -m-8 animate-pulse"
             style={{
@@ -98,9 +93,25 @@ export default function ClosingSection() {
         {/* Divider */}
         <div className="h-px w-40 bg-outline-variant/30 mx-auto my-10" />
 
-        <p className="font-label text-[10px] tracking-[0.5em] text-outline uppercase">
-          Wassalamu&apos;alaikum Warahmatullahi Wabarakatuh
-        </p>
+        {/* Wassalamu'alaikum — Arabic + Latin */}
+        <motion.div
+          className="flex flex-col items-center gap-2"
+          initial={prefersReduced ? {} : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <p
+            className="text-2xl md:text-3xl text-primary"
+            style={{ fontFamily: "'Amiri', serif" }}
+            dir="rtl"
+          >
+            وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ
+          </p>
+          <p className="font-label text-[10px] tracking-[0.5em] text-outline uppercase mt-1">
+            Wassalamu&apos;alaikum Warahmatullahi Wabarakatuh
+          </p>
+        </motion.div>
       </div>
     </section>
   );

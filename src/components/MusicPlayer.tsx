@@ -22,17 +22,15 @@ function FloatingNotes({ playing }: { playing: boolean }) {
   }, [playing]);
 
   return (
-    <div className="absolute -top-12 left-1/2 -translate-x-1/2 pointer-events-none" aria-hidden="true">
+    <div className="absolute inset-0 pointer-events-none">
       {notes.map((n) => (
         <motion.span
           key={n.id}
-          className="absolute text-primary/40 text-lg"
-          initial={{ y: 0, x: n.x, opacity: 1 }}
-          animate={{ y: -80, opacity: 0 }}
-          transition={{ duration: 3, ease: 'easeOut' }}
-          onAnimationComplete={() =>
-            setNotes((prev) => prev.filter((nn) => nn.id !== n.id))
-          }
+          initial={{ opacity: 1, y: 0, x: n.x }}
+          animate={{ opacity: 0, y: -60 }}
+          transition={{ duration: 1.5 }}
+          onAnimationComplete={() => setNotes((prev) => prev.filter((nn) => nn.id !== n.id))}
+          className="absolute bottom-full text-primary text-sm"
         >
           {n.char}
         </motion.span>
@@ -45,19 +43,14 @@ function FloatingNotes({ playing }: { playing: boolean }) {
 function SoundWaveBars({ playing }: { playing: boolean }) {
   const delays = [0, 0.1, 0.2, 0.3, 0.4];
   const durations = [0.5, 0.6, 0.4, 0.7, 0.5];
-
   return (
-    <div className={`flex items-end gap-[2px] h-4 ${playing ? '' : 'hidden'}`}>
+    <div className="flex items-end gap-0.5 h-4">
       {delays.map((d, i) => (
-        <div
+        <motion.div
           key={i}
-          className="sound-bar motion-reduce:animate-none"
-          style={{
-            height: '100%',
-            animationDelay: `${d}s`,
-            animationDuration: `${durations[i]}s`,
-            animationPlayState: playing ? 'running' : 'paused',
-          }}
+          className="w-0.5 bg-primary rounded-full"
+          animate={playing ? { height: ['4px', '16px', '4px'] } : { height: '4px' }}
+          transition={{ duration: durations[i], delay: d, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
     </div>
@@ -69,50 +62,77 @@ export default function MusicPlayer() {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const prefersReduced = useReducedMotion();
+  const hasInteracted = useRef(false);
+
+  // Autoplay: coba jalankan audio saat komponen mount
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Coba autoplay langsung
+    audio.play()
+      .then(() => {
+        setPlaying(true);
+        hasInteracted.current = true;
+      })
+      .catch(() => {
+        // Browser blokir autoplay — tunggu interaksi pertama user
+        const handleFirstInteraction = () => {
+          if (hasInteracted.current) return;
+          hasInteracted.current = true;
+          audio.play().then(() => setPlaying(true)).catch(() => { });
+          document.removeEventListener('click', handleFirstInteraction);
+          document.removeEventListener('touchstart', handleFirstInteraction);
+          document.removeEventListener('keydown', handleFirstInteraction);
+        };
+
+        document.addEventListener('click', handleFirstInteraction);
+        document.addEventListener('touchstart', handleFirstInteraction);
+        document.addEventListener('keydown', handleFirstInteraction);
+      });
+  }, []);
 
   const toggle = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (playing) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
     setPlaying((prev) => !prev);
-    // In production, you'd control audioRef.current.play()/pause() here
   };
 
   return (
-    <div className="fixed bottom-24 right-6 md:bottom-10 md:right-10 z-[70]">
+    <div className="fixed bottom-4 right-4 z-50">
       <motion.button
         onClick={toggle}
-        className="relative bg-white text-primary p-5 rounded-full shadow-2xl flex items-center justify-center cursor-pointer"
-        animate={
-          prefersReduced
-            ? {}
-            : playing
-            ? { boxShadow: ['0 0 0px rgba(233,195,73,0.3)', '0 0 16px rgba(233,195,73,0.6)', '0 0 0px rgba(233,195,73,0.3)'] }
-            : { scale: [1, 1.05, 1] }
-        }
-        transition={{ repeat: Infinity, duration: 2 }}
+        className="relative w-12 h-12 rounded-full bg-white/80 backdrop-blur shadow-lg flex items-center justify-center"
+        whileTap={{ scale: 0.9 }}
       >
         {/* Glow halo */}
-        <div className="absolute -inset-2 bg-gradient-to-tr from-primary to-tertiary rounded-full opacity-10 blur-xl animate-pulse pointer-events-none" />
+        {playing && (
+          <motion.div
+            className="absolute inset-0 rounded-full bg-primary/20"
+            animate={{ scale: [1, 1.4, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        )}
 
-        {/* Vinyl record / icon */}
-        <div className="relative z-10">
-          {playing ? (
-            <div
-              className="w-7 h-7 rounded-full border-4 border-primary motion-reduce:animate-none"
-              style={{
-                animation: 'vinylSpin 2s linear infinite',
-                borderTopColor: '#735c00',
-              }}
-            >
-              <div className="w-2 h-2 bg-primary rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-            </div>
-          ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12,3 L12,12.3 A3.5,3.5,0,1,0,14,15.5 L14,7 L18,7 L18,3Z" />
-            </svg>
-          )}
-        </div>
+        {/* Icon */}
+        {playing ? (
+          <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+            <rect x="6" y="4" width="4" height="16" />
+            <rect x="14" y="4" width="4" height="16" />
+          </svg>
+        ) : (
+          <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        )}
 
         {/* Sound wave bars */}
-        <div className="absolute top-1 right-1">
+        <div className="absolute -top-6">
           <SoundWaveBars playing={playing} />
         </div>
 
@@ -120,10 +140,13 @@ export default function MusicPlayer() {
         {playing && !prefersReduced && <FloatingNotes playing={playing} />}
       </motion.button>
 
-      {/* Hidden audio element (would connect to actual audio file) */}
-      <audio ref={audioRef} loop preload="none">
-        <source src="/audio/background.mp3" type="audio/mpeg" />
-      </audio>
+      {/* Audio element */}
+      <audio
+        ref={audioRef}
+        src="/audio/maryam.mp4"
+        loop
+        preload="auto"
+      />
     </div>
   );
 }

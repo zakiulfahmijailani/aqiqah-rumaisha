@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -53,6 +53,18 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const prefersReduced = useReducedMotion();
 
+  // iOS-safe: lock body scroll using position:fixed instead of overflow:hidden
+  useEffect(() => {
+    const scrollY = window.scrollY;
+    document.body.classList.add('locked');
+    document.body.style.top = `-${scrollY}px`;
+    return () => {
+      document.body.classList.remove('locked');
+      document.body.style.top = '';
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
   const handleOpen = useCallback(() => {
     confetti({
       particleCount: 120,
@@ -61,7 +73,11 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
       origin: { y: 0.6 },
     });
     setIsOpen(true);
+    // iOS-safe scroll unlock
+    const scrollY = Math.abs(parseInt(document.body.style.top || '0', 10));
     document.body.classList.remove('locked');
+    document.body.style.top = '';
+    window.scrollTo(0, scrollY);
     setTimeout(() => onOpen(), 800);
   }, [onOpen]);
 
@@ -81,7 +97,6 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
             exit={{ y: '100%' }}
             transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
           />
-
           <motion.section
             key="cover"
             className="fixed inset-0 flex flex-col items-center justify-center z-[120] section-cover"

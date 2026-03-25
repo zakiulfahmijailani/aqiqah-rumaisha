@@ -1,13 +1,13 @@
 // -- Run this in Supabase SQL Editor:
-// -- CREATE TABLE IF NOT EXISTS rsvp (
+// -- CREATE TABLE IF NOT EXISTS rsvp_rumaisha (
 // --   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
 // --   name text NOT NULL,
 // --   status text NOT NULL CHECK (status IN ('hadir', 'tidak_hadir')),
 // --   created_at timestamptz DEFAULT now()
 // -- );
-// -- ALTER TABLE rsvp ENABLE ROW LEVEL SECURITY;
-// -- CREATE POLICY "Anyone can insert rsvp" ON rsvp FOR INSERT WITH CHECK (true);
-// -- CREATE POLICY "Anyone can read rsvp" ON rsvp FOR SELECT USING (true);
+// -- ALTER TABLE rsvp_rumaisha ENABLE ROW LEVEL SECURITY;
+// -- CREATE POLICY "Anyone can insert rsvp_rumaisha" ON rsvp_rumaisha FOR INSERT WITH CHECK (true);
+// -- CREATE POLICY "Anyone can read rsvp_rumaisha" ON rsvp_rumaisha FOR SELECT USING (true);
 
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
@@ -34,9 +34,8 @@ export default function RSVPSection() {
   const shakeControls = useAnimation();
   const prefersReduced = useReducedMotion();
 
-  /* Fetch attendance summary */
   const fetchSummary = useCallback(async () => {
-    const { data } = await supabase.from('rsvp').select('status');
+    const { data } = await supabase.from('rsvp_rumaisha').select('status');
     if (data) {
       const hadir = data.filter((r) => r.status === 'hadir').length;
       const tidak = data.filter((r) => r.status === 'tidak_hadir').length;
@@ -49,7 +48,6 @@ export default function RSVPSection() {
     fetchSummary();
   }, [fetchSummary]);
 
-  /* Submit handler */
   const handleSubmit = useCallback(async () => {
     if (!name.trim() || !status) {
       shakeControls.start({ x: [-8, 8, -8, 8, 0], transition: { duration: 0.3 } });
@@ -59,7 +57,7 @@ export default function RSVPSection() {
     setSubmitState('loading');
 
     const { error } = await supabase
-      .from('rsvp')
+      .from('rsvp_rumaisha')
       .insert([{ name: name.trim(), status }]);
 
     if (error) {
@@ -71,7 +69,7 @@ export default function RSVPSection() {
     setSubmitState('success');
     setName('');
     setStatus(null);
-    fetchSummary(); // re-fetch to update summary
+    fetchSummary();
     setTimeout(() => setSubmitState('idle'), 4000);
   }, [name, status, shakeControls, fetchSummary]);
 
@@ -80,10 +78,9 @@ export default function RSVPSection() {
   return (
     <section
       className="px-4 py-20 relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #e8f5f0, #f0fdf4)' }}
+      style={{ background: 'linear-gradient(135deg, #FFF0F5, #FFE4EC)' }}
     >
       <div className="max-w-xl mx-auto relative z-10">
-        {/* Title */}
         <motion.div
           className="text-center mb-10"
           initial={prefersReduced ? {} : { opacity: 0, y: 20 }}
@@ -99,7 +96,6 @@ export default function RSVPSection() {
           </p>
         </motion.div>
 
-        {/* Form Card */}
         <motion.div
           className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-8 max-w-[520px] mx-auto mb-10"
           initial={prefersReduced ? {} : { opacity: 0, y: 30 }}
@@ -115,13 +111,7 @@ export default function RSVPSection() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 200, damping: 12 }}
             >
-              <svg
-                width="56"
-                height="56"
-                viewBox="0 0 24 24"
-                fill="#B5EAD7"
-                className="mx-auto mb-4"
-              >
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="#FFB7C5" className="mx-auto mb-4">
                 <path d="M12,2 A10,10,0,1,0,22,12 A10,10,0,0,0,12,2Z" />
                 <path d="M8,12 L11,15 L16,9" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -131,7 +121,6 @@ export default function RSVPSection() {
             </motion.div>
           ) : (
             <div className="flex flex-col gap-5">
-              {/* Name input */}
               <div>
                 <label className="font-label text-[10px] tracking-widest uppercase text-secondary mb-1.5 block">
                   Nama
@@ -142,33 +131,27 @@ export default function RSVPSection() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Nama Anda"
                   required
-                  className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white/80 focus:ring-2 focus:ring-emerald-300 focus:border-emerald-300 outline-none transition-all duration-200 text-sm text-gray-700 placeholder-gray-400"
+                  className="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white/80 focus:ring-2 focus:ring-pink-300 focus:border-pink-300 outline-none transition-all duration-200 text-sm text-gray-700 placeholder-gray-400"
                 />
               </div>
 
-              {/* Status toggle cards */}
               <div>
                 <label className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 block">
                   Konfirmasi
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {/* Hadir */}
                   <button
                     type="button"
                     onClick={() => setStatus('hadir')}
                     className={`cursor-pointer rounded-xl p-4 text-left border-2 transition-all duration-200 ${
                       status === 'hadir'
-                        ? 'border-emerald-400 bg-emerald-50 shadow-md'
-                        : 'border-gray-200 bg-white/60 hover:border-emerald-200'
+                        ? 'border-pink-400 bg-pink-50 shadow-md'
+                        : 'border-gray-200 bg-white/60 hover:border-pink-200'
                     }`}
                   >
                     <span className="text-2xl mb-1 block">✅</span>
-                    <span className="font-semibold text-sm text-gray-800 block">
-                      Insya Allah Hadir
-                    </span>
+                    <span className="font-semibold text-sm text-gray-800 block">Insya Allah Hadir</span>
                   </button>
-
-                  {/* Tidak Hadir */}
                   <button
                     type="button"
                     onClick={() => setStatus('tidak_hadir')}
@@ -179,19 +162,16 @@ export default function RSVPSection() {
                     }`}
                   >
                     <span className="text-2xl mb-1 block">🙏</span>
-                    <span className="font-semibold text-sm text-gray-800 block">
-                      Mohon Maaf, Tidak Bisa Hadir
-                    </span>
+                    <span className="font-semibold text-sm text-gray-800 block">Mohon Maaf, Tidak Bisa Hadir</span>
                   </button>
                 </div>
               </div>
 
-              {/* Submit button */}
               <motion.button
                 type="button"
                 onClick={handleSubmit}
                 disabled={submitState === 'loading'}
-                className={`w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-semibold py-3 px-6 rounded-xl cursor-pointer flex items-center justify-center transition-opacity ${
+                className={`w-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-semibold py-3 px-6 rounded-xl cursor-pointer flex items-center justify-center transition-opacity ${
                   submitState === 'loading' ? 'opacity-60 cursor-not-allowed' : ''
                 }`}
                 whileHover={submitState === 'loading' || prefersReduced ? {} : { scale: 1.02 }}
@@ -210,13 +190,8 @@ export default function RSVPSection() {
                 )}
               </motion.button>
 
-              {/* Error */}
               {submitState === 'error' && (
-                <motion.p
-                  className="text-rose-500 text-sm text-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
+                <motion.p className="text-rose-500 text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   Gagal mengirim. Silakan coba lagi.
                 </motion.p>
               )}
@@ -224,7 +199,6 @@ export default function RSVPSection() {
           )}
         </motion.div>
 
-        {/* ── Attendance Summary ──────────── */}
         {loadingSummary ? (
           <div className="max-w-[520px] mx-auto space-y-3 animate-pulse">
             <div className="h-4 w-40 bg-gray-200 rounded mx-auto" />
@@ -242,8 +216,6 @@ export default function RSVPSection() {
             <p className="text-center text-sm text-secondary mb-4">
               <span className="font-semibold text-primary">{summary.total}</span> tamu telah mengkonfirmasi
             </p>
-
-            {/* Hadir bar */}
             <div className="mb-3">
               <div className="flex justify-between text-xs text-gray-600 mb-1">
                 <span>✅ Hadir</span>
@@ -251,7 +223,7 @@ export default function RSVPSection() {
               </div>
               <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-emerald-400"
+                  className="h-full rounded-full bg-pink-400"
                   initial={{ width: 0 }}
                   whileInView={{ width: `${(summary.hadir / barMax) * 100}%` }}
                   viewport={{ once: true }}
@@ -259,8 +231,6 @@ export default function RSVPSection() {
                 />
               </div>
             </div>
-
-            {/* Tidak hadir bar */}
             <div>
               <div className="flex justify-between text-xs text-gray-600 mb-1">
                 <span>🙏 Tidak Hadir</span>

@@ -13,18 +13,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 import { supabase } from '@/lib/supabase';
 
 type SubmitState = 'idle' | 'loading' | 'success' | 'error';
 type RSVPStatus = 'hadir' | 'tidak_hadir' | null;
+interface RSVPSummary { hadir: number; tidak_hadir: number; total: number; }
 
-interface RSVPSummary {
-  hadir: number;
-  tidak_hadir: number;
-  total: number;
-}
-
-/* ── Main Section ─────────────────────────── */
 export default function RSVPSection() {
   const [name, setName] = useState('');
   const [status, setStatus] = useState<RSVPStatus>(null);
@@ -33,6 +28,7 @@ export default function RSVPSection() {
   const [loadingSummary, setLoadingSummary] = useState(true);
   const shakeControls = useAnimation();
   const prefersReduced = useReducedMotion();
+  const { ref, inView } = useInView();
 
   const fetchSummary = useCallback(async () => {
     const { data } = await supabase.from('rsvp_rumaisha').select('status');
@@ -44,28 +40,20 @@ export default function RSVPSection() {
     setLoadingSummary(false);
   }, []);
 
-  useEffect(() => {
-    fetchSummary();
-  }, [fetchSummary]);
+  useEffect(() => { fetchSummary(); }, [fetchSummary]);
 
   const handleSubmit = useCallback(async () => {
     if (!name.trim() || !status) {
       shakeControls.start({ x: [-8, 8, -8, 8, 0], transition: { duration: 0.3 } });
       return;
     }
-
     setSubmitState('loading');
-
-    const { error } = await supabase
-      .from('rsvp_rumaisha')
-      .insert([{ name: name.trim(), status }]);
-
+    const { error } = await supabase.from('rsvp_rumaisha').insert([{ name: name.trim(), status }]);
     if (error) {
       setSubmitState('error');
       shakeControls.start({ x: [-8, 8, -8, 8, 0], transition: { duration: 0.3 } });
       return;
     }
-
     setSubmitState('success');
     setName('');
     setStatus(null);
@@ -76,125 +64,57 @@ export default function RSVPSection() {
   const barMax = Math.max(summary.hadir + summary.tidak_hadir, 1);
 
   return (
-    <section
-      className="px-4 py-20 relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #FFF0F5, #FFE4EC)' }}
-    >
+    <section ref={ref} className="px-4 py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #FFF0F5, #FFE4EC)' }}>
       <div className="max-w-xl mx-auto relative z-10">
         <motion.div
           className="text-center mb-10"
-          initial={prefersReduced ? {} : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="font-headline text-3xl md:text-4xl text-primary mb-3">
-            Konfirmasi Kehadiran
-          </h2>
-          <p className="text-secondary text-sm">
-            Mohon konfirmasi kehadiran Anda agar kami dapat mempersiapkan dengan baik
-          </p>
+          <h2 className="font-headline text-3xl md:text-4xl text-primary mb-3">Konfirmasi Kehadiran</h2>
+          <p className="text-secondary text-sm">Mohon konfirmasi kehadiran Anda agar kami dapat mempersiapkan dengan baik</p>
         </motion.div>
 
         <motion.div
           className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-8 max-w-[520px] mx-auto mb-10"
-          initial={prefersReduced ? {} : { opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          animate={shakeControls}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          style={shakeControls as React.CSSProperties}
         >
           {submitState === 'success' ? (
-            <motion.div
-              className="text-center py-8"
-              initial={prefersReduced ? {} : { scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 12 }}
-            >
+            <motion.div className="text-center py-8" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 12 }}>
               <svg width="56" height="56" viewBox="0 0 24 24" fill="#FFB7C5" className="mx-auto mb-4">
                 <path d="M12,2 A10,10,0,1,0,22,12 A10,10,0,0,0,12,2Z" />
                 <path d="M8,12 L11,15 L16,9" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <h3 className="font-headline text-xl text-primary mb-2">
-                Terima kasih, konfirmasi Anda telah kami terima 🎉
-              </h3>
+              <h3 className="font-headline text-xl text-primary mb-2">Terima kasih, konfirmasi Anda telah kami terima 🎉</h3>
             </motion.div>
           ) : (
             <div className="flex flex-col gap-5">
               <div>
-                <label className="font-label text-[10px] tracking-widest uppercase text-secondary mb-1.5 block">
-                  Nama
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Nama Anda"
-                  required
-                  className="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white/80 focus:ring-2 focus:ring-pink-300 focus:border-pink-300 outline-none transition-all duration-200 text-sm text-gray-700 placeholder-gray-400"
-                />
+                <label className="font-label text-[10px] tracking-widest uppercase text-secondary mb-1.5 block">Nama</label>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nama Anda" required
+                  className="w-full border border-pink-200 rounded-xl px-4 py-3 bg-white/80 focus:ring-2 focus:ring-pink-300 outline-none transition-all text-sm text-gray-700 placeholder-gray-400" />
               </div>
-
               <div>
-                <label className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 block">
-                  Konfirmasi
-                </label>
+                <label className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 block">Konfirmasi</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setStatus('hadir')}
-                    className={`cursor-pointer rounded-xl p-4 text-left border-2 transition-all duration-200 ${
-                      status === 'hadir'
-                        ? 'border-pink-400 bg-pink-50 shadow-md'
-                        : 'border-gray-200 bg-white/60 hover:border-pink-200'
-                    }`}
-                  >
+                  <button type="button" onClick={() => setStatus('hadir')} className={`cursor-pointer rounded-xl p-4 text-left border-2 transition-all ${status === 'hadir' ? 'border-pink-400 bg-pink-50 shadow-md' : 'border-gray-200 bg-white/60 hover:border-pink-200'}`}>
                     <span className="text-2xl mb-1 block">✅</span>
                     <span className="font-semibold text-sm text-gray-800 block">Insya Allah Hadir</span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setStatus('tidak_hadir')}
-                    className={`cursor-pointer rounded-xl p-4 text-left border-2 transition-all duration-200 ${
-                      status === 'tidak_hadir'
-                        ? 'border-rose-300 bg-rose-50 shadow-md'
-                        : 'border-gray-200 bg-white/60 hover:border-rose-200'
-                    }`}
-                  >
+                  <button type="button" onClick={() => setStatus('tidak_hadir')} className={`cursor-pointer rounded-xl p-4 text-left border-2 transition-all ${status === 'tidak_hadir' ? 'border-rose-300 bg-rose-50 shadow-md' : 'border-gray-200 bg-white/60 hover:border-rose-200'}`}>
                     <span className="text-2xl mb-1 block">🙏</span>
                     <span className="font-semibold text-sm text-gray-800 block">Mohon Maaf, Tidak Bisa Hadir</span>
                   </button>
                 </div>
               </div>
-
-              <motion.button
-                type="button"
-                onClick={handleSubmit}
-                disabled={submitState === 'loading'}
-                className={`w-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-semibold py-3 px-6 rounded-xl cursor-pointer flex items-center justify-center transition-opacity ${
-                  submitState === 'loading' ? 'opacity-60 cursor-not-allowed' : ''
-                }`}
-                whileHover={submitState === 'loading' || prefersReduced ? {} : { scale: 1.02 }}
-                whileTap={submitState === 'loading' || prefersReduced ? {} : { scale: 0.98 }}
-              >
-                {submitState === 'loading' ? (
-                  <>
-                    Mengirim...
-                    <svg className="inline-block w-5 h-5 animate-spin ml-2" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
-                      <path d="M12,2 A10,10,0,0,1,22,12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                    </svg>
-                  </>
-                ) : (
-                  'Kirim Konfirmasi'
-                )}
+              <motion.button type="button" onClick={handleSubmit} disabled={submitState === 'loading'}
+                className={`w-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-semibold py-3 px-6 rounded-xl cursor-pointer flex items-center justify-center transition-opacity ${submitState === 'loading' ? 'opacity-60 cursor-not-allowed' : ''}`}
+                whileTap={prefersReduced ? {} : { scale: 0.98 }}>
+                {submitState === 'loading' ? 'Mengirim...' : 'Kirim Konfirmasi'}
               </motion.button>
-
-              {submitState === 'error' && (
-                <motion.p className="text-rose-500 text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  Gagal mengirim. Silakan coba lagi.
-                </motion.p>
-              )}
+              {submitState === 'error' && <p className="text-rose-500 text-sm text-center">Gagal mengirim. Silakan coba lagi.</p>}
             </div>
           )}
         </motion.div>
@@ -206,44 +126,19 @@ export default function RSVPSection() {
             <div className="h-6 bg-gray-200 rounded-full" />
           </div>
         ) : summary.total > 0 ? (
-          <motion.div
-            className="max-w-[520px] mx-auto bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-sm"
-            initial={prefersReduced ? {} : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <p className="text-center text-sm text-secondary mb-4">
-              <span className="font-semibold text-primary">{summary.total}</span> tamu telah mengkonfirmasi
-            </p>
+          <motion.div className="max-w-[520px] mx-auto bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-sm"
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} transition={{ duration: 0.5, delay: 0.2 }}>
+            <p className="text-center text-sm text-secondary mb-4"><span className="font-semibold text-primary">{summary.total}</span> tamu telah mengkonfirmasi</p>
             <div className="mb-3">
-              <div className="flex justify-between text-xs text-gray-600 mb-1">
-                <span>✅ Hadir</span>
-                <span className="font-semibold">{summary.hadir}</span>
-              </div>
+              <div className="flex justify-between text-xs text-gray-600 mb-1"><span>✅ Hadir</span><span className="font-semibold">{summary.hadir}</span></div>
               <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full bg-pink-400"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${(summary.hadir / barMax) * 100}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
+                <motion.div className="h-full rounded-full bg-pink-400" animate={inView ? { width: `${(summary.hadir / barMax) * 100}%` } : { width: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }} />
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-xs text-gray-600 mb-1">
-                <span>🙏 Tidak Hadir</span>
-                <span className="font-semibold">{summary.tidak_hadir}</span>
-              </div>
+              <div className="flex justify-between text-xs text-gray-600 mb-1"><span>🙏 Tidak Hadir</span><span className="font-semibold">{summary.tidak_hadir}</span></div>
               <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full bg-gray-300"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${(summary.tidak_hadir / barMax) * 100}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-                />
+                <motion.div className="h-full rounded-full bg-gray-300" animate={inView ? { width: `${(summary.tidak_hadir / barMax) * 100}%` } : { width: 0 }} transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }} />
               </div>
             </div>
           </motion.div>

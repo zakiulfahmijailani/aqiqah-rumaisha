@@ -1,51 +1,39 @@
 'use client';
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useRef } from 'react';
+import { useInView } from '@/hooks/useInView';
 import { BabyPrayingHands, FloatingStars, IslamicLantern } from '@/components/BabyIllustrations';
 import { CuteSheep, BabyCradle } from '@/components/AqiqahDecorations';
 
-/* ── Orbiting element ─────────────────────── */
 function OrbitingIcon({ radius = 50, speed = 1, children }: { radius?: number; speed?: number; children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
-
   useAnimationFrame((t) => {
     if (ref.current && !prefersReduced) {
       const time = t / 1000;
-      const x = Math.cos(time * speed) * radius;
-      const y = Math.sin(time * speed) * radius;
-      ref.current.style.transform = `translate(${x}px, ${y}px)`;
+      ref.current.style.transform = `translate(${Math.cos(time * speed) * radius}px, ${Math.sin(time * speed) * radius}px)`;
     }
   });
-
-  return (
-    <div ref={ref} className="absolute" style={{ willChange: 'transform' }}>
-      {children}
-    </div>
-  );
+  return <div ref={ref} className="absolute" style={{ willChange: 'transform' }}>{children}</div>;
 }
 
-/* ── Typewriter name ──────────────────────── */
 function TypewriterName({ name, delay = 0 }: { name: string; delay?: number }) {
   const prefersReduced = useReducedMotion();
+  const { ref, inView } = useInView();
   return (
     <motion.div
+      ref={ref}
       className="flex justify-center flex-wrap"
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      animate={inView ? 'visible' : 'hidden'}
       transition={{ staggerChildren: prefersReduced ? 0 : 0.05, delayChildren: delay }}
     >
       {name.split('').map((char, i) => (
         <motion.span
           key={i}
           className="font-headline text-4xl md:text-6xl text-primary tracking-tight"
-          variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: { opacity: 1, y: 0 },
-          }}
+          variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 0.3 }}
         >
           {char === ' ' ? '\u00A0' : char}
@@ -55,7 +43,6 @@ function TypewriterName({ name, delay = 0 }: { name: string; delay?: number }) {
   );
 }
 
-/* ── Baby bottle SVG ──────────────────────── */
 function BabyBottle() {
   return (
     <svg width="24" height="40" viewBox="0 0 24 40" className="animate-float motion-reduce:animate-none">
@@ -66,7 +53,6 @@ function BabyBottle() {
     </svg>
   );
 }
-
 function Rattle() {
   return (
     <svg width="24" height="36" viewBox="0 0 24 36" className="animate-sway motion-reduce:animate-none">
@@ -76,7 +62,6 @@ function Rattle() {
     </svg>
   );
 }
-
 function Cradle() {
   return (
     <svg width="40" height="30" viewBox="0 0 40 30" className="animate-rock-cradle motion-reduce:animate-none" style={{ transformOrigin: 'top center' }}>
@@ -86,7 +71,6 @@ function Cradle() {
     </svg>
   );
 }
-
 function BabyShoes() {
   return (
     <svg width="30" height="20" viewBox="0 0 30 20" className="animate-float motion-reduce:animate-none" style={{ animationDelay: '1.2s' }}>
@@ -95,67 +79,40 @@ function BabyShoes() {
     </svg>
   );
 }
-
-/* ── Rainbow Arc ──────────────────────────── */
 function RainbowArc() {
   return (
     <div className="relative w-48 md:w-64 h-24 md:h-32 mx-auto mb-8 opacity-40">
-      {['#ffdce4', '#ffe0ec', '#ffb7c5', '#FFDAC1', '#FFB7C5'].map((color, i) => (
-        <div
-          key={i}
-          className="absolute inset-0 rounded-t-full border-t-[6px] border-x-[6px] border-b-0 border-transparent"
-          style={{
-            borderTopColor: color,
-            transform: `scale(${1 - i * 0.1})`,
-          }}
-        />
+      {['#ffdce4','#ffe0ec','#ffb7c5','#FFDAC1','#FFB7C5'].map((color, i) => (
+        <div key={i} className="absolute inset-0 rounded-t-full border-t-[6px] border-x-[6px] border-b-0 border-transparent"
+          style={{ borderTopColor: color, transform: `scale(${1 - i * 0.1})` }} />
       ))}
-      <div
-        className="absolute inset-0 rounded-t-full border-t-4 border-x-4 border-b-0 border-transparent motion-reduce:animate-none"
-        style={{
-          borderTopColor: '#e9c349',
-          animation: 'spinSlow 6s linear infinite',
-        }}
-      />
+      <div className="absolute inset-0 rounded-t-full border-t-4 border-x-4 border-b-0 border-transparent motion-reduce:animate-none"
+        style={{ borderTopColor: '#e9c349', animation: 'spinSlow 6s linear infinite' }} />
     </div>
   );
 }
 
-/* ── Main Section ─────────────────────────── */
 export default function BabyNamesSection() {
   const prefersReduced = useReducedMotion();
+  const { ref, inView } = useInView();
 
   return (
-    <section
-      className="px-4 py-20 relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #FFF0F5, #FFE4EC)' }}
-    >
+    <section className="px-4 py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #FFF0F5, #FFE4EC)' }}>
       <RainbowArc />
-
-      {/* Single child — centered */}
       <div className="max-w-md mx-auto relative z-10">
-        {/* Decorative header row */}
         <div className="flex justify-center items-end gap-8 mb-8 opacity-50">
           <CuteSheep size={50} delay={0} />
           <BabyCradle size={65} delay={0.3} />
           <CuteSheep size={45} delay={0.6} flip />
         </div>
-
-        {/* Flanking sheep - left */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-30 hidden md:block">
-          <CuteSheep size={40} delay={0.2} />
-        </div>
-        {/* Flanking sheep - right */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-30 hidden md:block">
-          <CuteSheep size={40} delay={0.5} flip />
-        </div>
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-30 hidden md:block"><CuteSheep size={40} delay={0.2} /></div>
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-30 hidden md:block"><CuteSheep size={40} delay={0.5} flip /></div>
 
         <motion.div
+          ref={ref}
           className="flex flex-col items-center text-center"
-          initial={prefersReduced ? {} : { opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.7, type: 'spring' }}
-          viewport={{ once: true }}
         >
           <div className="relative inline-block mb-4">
             <OrbitingIcon radius={70} speed={0.4}>
@@ -172,28 +129,16 @@ export default function BabyNamesSection() {
               <TypewriterName name="Rumaisha Qonita" delay={0} />
             </h2>
           </div>
-          <p className="font-label text-xs tracking-widest text-secondary uppercase mb-1">
-            Perempuan
-          </p>
+          <p className="font-label text-xs tracking-widest text-secondary uppercase mb-1">Perempuan</p>
           <p className="text-secondary text-sm mb-6">Lahir pada tanggal 4 Februari 2026</p>
-
-          {/* Parents */}
           <div className="bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-5 shadow-sm w-full">
-            <p className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 italic">
-              Putri Tercinta dari
-            </p>
-            <p className="font-semibold text-gray-800 text-sm leading-relaxed">
-              Bapak Tri Rachmat Riski
-            </p>
+            <p className="font-label text-[10px] tracking-widest uppercase text-secondary mb-2 italic">Putri Tercinta dari</p>
+            <p className="font-semibold text-gray-800 text-sm leading-relaxed">Bapak Tri Rachmat Riski</p>
             <p className="text-gray-600 text-sm">&amp;</p>
-            <p className="font-semibold text-gray-800 text-sm leading-relaxed">
-              Ibu Upita Anggunsuri
-            </p>
+            <p className="font-semibold text-gray-800 text-sm leading-relaxed">Ibu Upita Anggunsuri</p>
           </div>
-
-          {/* Baby items */}
           <div className="flex gap-6 mt-6 justify-center opacity-40">
-            <div className="animate-float" style={{ animationDelay: '0s' }}><BabyBottle /></div>
+            <div className="animate-float"><BabyBottle /></div>
             <div className="animate-sway" style={{ animationDelay: '0.2s' }}><Rattle /></div>
             <div className="animate-rock-cradle" style={{ animationDelay: '0.4s' }}><Cradle /></div>
             <div className="animate-float" style={{ animationDelay: '0.6s' }}><BabyShoes /></div>

@@ -1,8 +1,7 @@
 'use client';
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 
 interface BismillahProps {
   size?: 'sm' | 'md' | 'lg';
@@ -10,12 +9,8 @@ interface BismillahProps {
   className?: string;
 }
 
-export default function BismillahCalligraphy({
-  size = 'md',
-  color = '#735c00',
-  className = '',
-}: BismillahProps) {
-  const prefersReduced = useReducedMotion();
+export default function BismillahCalligraphy({ size = 'md', color = '#735c00', className = '' }: BismillahProps) {
+  const { ref, inView } = useInView();
 
   const sizeClass = {
     sm: 'text-3xl',
@@ -24,53 +19,20 @@ export default function BismillahCalligraphy({
   }[size];
 
   return (
-    <div className={`flex flex-col items-center justify-center ${className}`}>
+    <div ref={ref} className={`flex flex-col items-center justify-center ${className}`}>
       <motion.div
-        initial={prefersReduced ? {} : { opacity: 0, scale: 0.85 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
         transition={{ duration: 1.2, ease: 'easeOut' }}
-        viewport={{ once: true }}
         className="text-center"
       >
-        <p
-          dir="rtl"
-          className={`font-arabic tracking-widest leading-relaxed px-4 ${sizeClass}`}
-          style={{ color }}
-        >
+        <p dir="rtl" className={`font-arabic tracking-widest leading-relaxed px-4 ${sizeClass}`} style={{ color }}>
           بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
         </p>
-
-        {/* Decorative Divider */}
         <div className="mt-4 flex justify-center">
-          <svg
-            width="200"
-            height="12"
-            viewBox="0 0 200 12"
-            fill="none"
-            style={{ opacity: 0.4 }}
-            aria-hidden="true"
-          >
-            <line
-              x1="0"
-              y1="6"
-              x2="94"
-              y2="6"
-              stroke={color}
-              strokeWidth="1"
-            />
-            {/* Center Diamond */}
-            <polygon
-              points="100,2 104,6 100,10 96,6"
-              fill={color}
-            />
-            <line
-              x1="106"
-              y1="6"
-              x2="200"
-              y2="6"
-              stroke={color}
-              strokeWidth="1"
-            />
+          <svg width="200" height="12" viewBox="0 0 200 12" fill="none" style={{ opacity: 0.4 }} aria-hidden="true">
+            <line x1="0" y1="6" x2="94" y2="6" stroke={color} strokeWidth="1" />
+            <polygon points="100,2 104,6 100,10 96,6" fill={color} />
+            <line x1="106" y1="6" x2="200" y2="6" stroke={color} strokeWidth="1" />
           </svg>
         </div>
       </motion.div>

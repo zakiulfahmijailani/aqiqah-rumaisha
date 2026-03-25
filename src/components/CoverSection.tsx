@@ -7,7 +7,6 @@ import BismillahCalligraphy from '@/components/BismillahCalligraphy';
 import { MuslimBabyBoy, BabyMoon, FloatingStars, IslamicLantern } from '@/components/BabyIllustrations';
 import { MuslimBabyBoySeated, BabyCradle, MoonAndStars, CuteSheep, IslamicStarPattern } from '@/components/AqiqahDecorations';
 
-/* ── Inline SVG Elements ──────────────────── */
 function HotAirBalloon() {
   return (
     <svg width="50" height="70" viewBox="0 0 50 70" className="animate-float motion-reduce:animate-none">
@@ -46,7 +45,6 @@ function GiftBox({ delay = 0, color = '#B5EAD7' }: { delay?: number; color?: str
   );
 }
 
-/* ── Cover Section ────────────────────────── */
 interface CoverSectionProps {
   onOpen: () => void;
 }
@@ -56,7 +54,6 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
   const prefersReduced = useReducedMotion();
 
   const handleOpen = useCallback(() => {
-    // Fire confetti
     confetti({
       particleCount: 120,
       spread: 100,
@@ -72,14 +69,12 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
     <AnimatePresence>
       {!isOpen && (
         <>
-          {/* Top curtain */}
           <motion.div
             key="curtain-top"
             className="fixed inset-x-0 top-0 h-1/2 z-[110] section-cover flex items-end justify-center"
             exit={{ y: '-100%' }}
             transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
           />
-          {/* Bottom curtain */}
           <motion.div
             key="curtain-bottom"
             className="fixed inset-x-0 bottom-0 h-1/2 z-[110] section-cover"
@@ -87,70 +82,31 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
             transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
           />
 
-          {/* Main cover content */}
           <motion.section
             key="cover"
             className="fixed inset-0 flex flex-col items-center justify-center z-[120] section-cover"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {/* Floating decorations */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-              <div className="absolute top-[10%] left-[5%]">
-                <HotAirBalloon />
-              </div>
-              <div className="absolute top-[20%] right-[8%]">
-                <StorkSilhouette />
-              </div>
-              <div className="absolute bottom-[25%] left-[10%]">
-                <GiftBox delay={0.8} color="#C7CEEA" />
-              </div>
-              <div className="absolute bottom-[30%] right-[12%]">
-                <GiftBox delay={1.2} color="#FFDAC1" />
-              </div>
-              <div className="absolute top-[50%] left-[50%] -translate-x-1/2">
-                <GiftBox delay={1.6} color="#B5EAD7" />
-              </div>
-
-              {/* Islamic Baby Illustrations */}
-              <div className="absolute top-[8%] left-[50%] -translate-x-1/2">
-                <BabyMoon size={80} delay={0} />
-              </div>
-              <div className="absolute bottom-[10%] left-[15%]">
-                <IslamicLantern size={50} delay={0.5} />
-              </div>
-              <div className="absolute top-[15%] right-[15%]">
-                <FloatingStars size={60} delay={0.3} />
-              </div>
-              <div className="absolute top-[45%] right-[20%]">
-                <MuslimBabyBoy size={70} delay={0.8} />
-              </div>
-
-              {/* Dreamland Enhancements */}
-              <div className="absolute" style={{ top: '8%', left: '10%' }}>
-                <MoonAndStars size={90} delay={0} />
-              </div>
-              <div className="absolute" style={{ top: '5%', left: '75%' }}>
-                <IslamicStarPattern size={60} delay={0.5} />
-              </div>
-              <div className="absolute" style={{ top: '40%', left: '5%' }}>
-                <CuteSheep size={65} delay={0.3} />
-              </div>
-              <div className="absolute" style={{ top: '38%', left: '78%' }}>
-                <CuteSheep size={55} delay={0.8} flip />
-              </div>
-              <div className="absolute" style={{ top: '70%', left: '8%' }}>
-                <BabyCradle size={80} delay={0.6} />
-              </div>
-              <div className="absolute" style={{ top: '75%', left: '40%' }}>
-                <MuslimBabyBoySeated size={70} delay={1} />
-              </div>
-              <div className="absolute" style={{ top: '72%', left: '72%' }}>
-                <CuteSheep size={45} delay={1.2} />
-              </div>
+              <div className="absolute top-[10%] left-[5%]"><HotAirBalloon /></div>
+              <div className="absolute top-[20%] right-[8%]"><StorkSilhouette /></div>
+              <div className="absolute bottom-[25%] left-[10%]"><GiftBox delay={0.8} color="#C7CEEA" /></div>
+              <div className="absolute bottom-[30%] right-[12%]"><GiftBox delay={1.2} color="#FFDAC1" /></div>
+              <div className="absolute top-[50%] left-[50%] -translate-x-1/2"><GiftBox delay={1.6} color="#FFB7C5" /></div>
+              <div className="absolute top-[8%] left-[50%] -translate-x-1/2"><BabyMoon size={80} delay={0} /></div>
+              <div className="absolute bottom-[10%] left-[15%]"><IslamicLantern size={50} delay={0.5} /></div>
+              <div className="absolute top-[15%] right-[15%]"><FloatingStars size={60} delay={0.3} /></div>
+              <div className="absolute top-[45%] right-[20%]"><MuslimBabyBoy size={70} delay={0.8} /></div>
+              <div className="absolute" style={{ top: '8%', left: '10%' }}><MoonAndStars size={90} delay={0} /></div>
+              <div className="absolute" style={{ top: '5%', left: '75%' }}><IslamicStarPattern size={60} delay={0.5} /></div>
+              <div className="absolute" style={{ top: '40%', left: '5%' }}><CuteSheep size={65} delay={0.3} /></div>
+              <div className="absolute" style={{ top: '38%', left: '78%' }}><CuteSheep size={55} delay={0.8} flip /></div>
+              <div className="absolute" style={{ top: '70%', left: '8%' }}><BabyCradle size={80} delay={0.6} /></div>
+              <div className="absolute" style={{ top: '75%', left: '40%' }}><MuslimBabyBoySeated size={70} delay={1} /></div>
+              <div className="absolute" style={{ top: '72%', left: '72%' }}><CuteSheep size={45} delay={1.2} /></div>
             </div>
 
-            {/* Envelope card */}
             <motion.div
               className="z-10 max-w-lg w-full flex flex-col items-center px-6 text-center"
               initial={prefersReduced ? {} : { opacity: 0, y: 30 }}
@@ -172,17 +128,13 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 120, damping: 10, delay: 0.5 }}
               >
-                {/* Top gradient bar */}
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-tertiary opacity-30" />
-
                 <BismillahCalligraphy size="md" color="#735c00" className="mb-6" />
-
                 <p className="font-body text-secondary text-sm max-w-[280px] leading-relaxed">
-                  Kami mengundang Anda untuk hadir dalam syukuran Aqiqah putra kami
+                  Kami mengundang Anda untuk hadir dalam syukuran Aqiqah putri kami
                 </p>
               </motion.div>
 
-              {/* CTA Button */}
               <motion.button
                 onClick={handleOpen}
                 className="group relative bg-primary text-on-primary px-10 py-5 rounded-xl font-medium tracking-wide flex items-center gap-3 shadow-xl shadow-primary/20 cursor-pointer"
@@ -198,7 +150,6 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
                     <path d="M0,0 L9,8 L18,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
                   </svg>
                 </span>
-                {/* Pulse ring */}
                 <div className="absolute inset-0 rounded-xl border-2 border-on-primary/30 animate-[pulseRing_2s_infinite]" />
               </motion.button>
             </motion.div>

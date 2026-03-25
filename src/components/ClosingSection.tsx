@@ -5,7 +5,6 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import FootprintsAnimation from './FootprintsAnimation';
 import { SheepFamily } from './AqiqahDecorations';
 
-/* ── Paper Lanterns ───────────────────────── */
 const lanternColors = ['#e74c3c', '#e67e22', '#f1c40f', '#FFB7C5', '#9b59b6', '#B5EAD7'];
 
 function PaperLanterns() {
@@ -34,7 +33,6 @@ function PaperLanterns() {
   );
 }
 
-/* ── Main Section ─────────────────────────── */
 export default function ClosingSection() {
   const prefersReduced = useReducedMotion();
 
@@ -51,11 +49,10 @@ export default function ClosingSection() {
           transition={{ duration: 0.8 }}
         >
           Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i
-          berkenan hadir untuk memberikan doa restu kepada putra kami. Atas kehadiran
+          berkenan hadir untuk memberikan doa restu kepada putri kami. Atas kehadiran
           dan doa restunya, kami ucapkan terima kasih.
         </motion.p>
 
-        {/* Family name with halo */}
         <motion.div
           className="relative inline-block mb-12"
           initial={prefersReduced ? {} : { opacity: 0, scale: 0.9 }}
@@ -71,11 +68,10 @@ export default function ClosingSection() {
             }}
           />
           <h4 className="font-headline text-3xl md:text-4xl text-primary relative">
-            Keluarga Besar Zakiul Fahmi Jailani &amp; Kemala Putri Ayunda
+            Keluarga Besar Tri Rachmat Riski &amp; Upita Anggunsuri
           </h4>
         </motion.div>
 
-        {/* Heart icon */}
         <div className="flex items-center justify-center gap-4 text-tertiary mb-8">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#735c00" opacity="0.3">
             <path d="M12,21 C12,21 3,13 3,8 A5,5,0,0,1,12,5 A5,5,0,0,1,21,8 C21,13 12,21 12,21Z" />
@@ -88,13 +84,10 @@ export default function ClosingSection() {
           </svg>
         </div>
 
-        {/* Footprints */}
         <FootprintsAnimation />
 
-        {/* Divider */}
         <div className="h-px w-40 bg-outline-variant/30 mx-auto my-10" />
 
-        {/* Wassalamu'alaikum — Arabic + Latin */}
         <motion.div
           className="flex flex-col items-center gap-2"
           initial={prefersReduced ? {} : { opacity: 0, y: 10 }}
@@ -107,14 +100,13 @@ export default function ClosingSection() {
             style={{ fontFamily: "'Amiri', serif" }}
             dir="rtl"
           >
-            وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ
+            وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ
           </p>
           <p className="font-label text-[10px] tracking-[0.5em] text-outline uppercase mt-1">
             Wassalamu&apos;alaikum Warahmatullahi Wabarakatuh
           </p>
         </motion.div>
 
-        {/* ENHANCED: Sheep parade at the bottom */}
         <div className="mt-12 opacity-30 overflow-hidden">
           <SheepFamily />
         </div>

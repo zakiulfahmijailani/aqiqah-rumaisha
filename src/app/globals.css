@@ -30,6 +30,7 @@
   --font-body: 'Plus Jakarta Sans', sans-serif;
   --font-label: 'Plus Jakarta Sans', sans-serif;
 
+  /* Custom animations */
   --animate-float: float 3s ease-in-out infinite;
   --animate-sway: sway 2.5s ease-in-out infinite;
   --animate-shimmer: shimmer 3s linear infinite;
@@ -46,6 +47,7 @@
   --animate-sky-loop: skyLoop 20s ease-in-out infinite;
 }
 
+/* ── Keyframes ────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-12px); }
@@ -131,10 +133,7 @@
   100% { transform: translateY(100vh) translateX(80px) rotate(360deg); opacity: 0; }
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-}
+/* ── Global Styles ────────────────────────── */
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
@@ -142,8 +141,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
-
-/* NO scroll lock class — iOS handles this via cover overlay */
+body.locked { overflow: hidden; }
 
 .font-arabic {
   font-family: 'Amiri', serif;
@@ -154,6 +152,7 @@ body {
   color: var(--color-primary);
 }
 
+/* ── Reduced Motion ───────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -162,12 +161,14 @@ body {
   }
 }
 
+/* ── Shimmer Card ─────────────────────────── */
 .shimmer-card {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
 
+/* ── Section Gradients ────────────────────── */
 .section-cover   { background: linear-gradient(135deg, #FFF5F7, #FFF0E6); }
 .section-names   { background: linear-gradient(135deg, #F0FFF4, #E8F8FF); }
 .section-events  { background: linear-gradient(135deg, #FFF8E7, #FEF0FF); }
@@ -176,6 +177,7 @@ body {
 .section-wishes  { background: linear-gradient(135deg, #F5F0FF, #FFF5F7); }
 .section-closing { background: linear-gradient(135deg, #FFF5F7, #F5F0FF); }
 
+/* ── Sound Bars ───────────────────────────── */
 .sound-bar {
   display: inline-block;
   width: 3px;
@@ -184,17 +186,10 @@ body {
   animation: soundBar 0.5s ease-in-out infinite alternate;
 }
 
+/* ── Scrollbar Styling ────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 3px; }
 
+/* ── Clip Triangle for Bunting ────────────── */
 .clip-triangle { clip-path: polygon(0 0, 100% 0, 50% 100%); }
-
-/* Cover overlay — sits on top, no body lock needed */
-.cover-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  touch-action: none;
-  -webkit-overflow-scrolling: auto;
-}

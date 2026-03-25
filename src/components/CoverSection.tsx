@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -53,18 +53,6 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const prefersReduced = useReducedMotion();
 
-  // iOS-safe: lock body scroll using position:fixed instead of overflow:hidden
-  useEffect(() => {
-    const scrollY = window.scrollY;
-    document.body.classList.add('locked');
-    document.body.style.top = `-${scrollY}px`;
-    return () => {
-      document.body.classList.remove('locked');
-      document.body.style.top = '';
-      window.scrollTo(0, scrollY);
-    };
-  }, []);
-
   const handleOpen = useCallback(() => {
     confetti({
       particleCount: 120,
@@ -73,103 +61,69 @@ export default function CoverSection({ onOpen }: CoverSectionProps) {
       origin: { y: 0.6 },
     });
     setIsOpen(true);
-    // iOS-safe scroll unlock
-    const scrollY = Math.abs(parseInt(document.body.style.top || '0', 10));
-    document.body.classList.remove('locked');
-    document.body.style.top = '';
-    window.scrollTo(0, scrollY);
     setTimeout(() => onOpen(), 800);
   }, [onOpen]);
 
   return (
     <AnimatePresence>
       {!isOpen && (
-        <>
-          <motion.div
-            key="curtain-top"
-            className="fixed inset-x-0 top-0 h-1/2 z-[110] section-cover flex items-end justify-center"
-            exit={{ y: '-100%' }}
-            transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
-          />
-          <motion.div
-            key="curtain-bottom"
-            className="fixed inset-x-0 bottom-0 h-1/2 z-[110] section-cover"
-            exit={{ y: '100%' }}
-            transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
-          />
-          <motion.section
-            key="cover"
-            className="fixed inset-0 flex flex-col items-center justify-center z-[120] section-cover"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-              <div className="absolute top-[10%] left-[5%]"><HotAirBalloon /></div>
-              <div className="absolute top-[20%] right-[8%]"><StorkSilhouette /></div>
-              <div className="absolute bottom-[25%] left-[10%]"><GiftBox delay={0.8} color="#C7CEEA" /></div>
-              <div className="absolute bottom-[30%] right-[12%]"><GiftBox delay={1.2} color="#FFDAC1" /></div>
-              <div className="absolute top-[50%] left-[50%] -translate-x-1/2"><GiftBox delay={1.6} color="#FFB7C5" /></div>
-              <div className="absolute top-[8%] left-[50%] -translate-x-1/2"><BabyMoon size={80} delay={0} /></div>
-              <div className="absolute bottom-[10%] left-[15%]"><IslamicLantern size={50} delay={0.5} /></div>
-              <div className="absolute top-[15%] right-[15%]"><FloatingStars size={60} delay={0.3} /></div>
-              <div className="absolute top-[45%] right-[20%]"><MuslimBabyBoy size={70} delay={0.8} /></div>
-              <div className="absolute" style={{ top: '8%', left: '10%' }}><MoonAndStars size={90} delay={0} /></div>
-              <div className="absolute" style={{ top: '5%', left: '75%' }}><IslamicStarPattern size={60} delay={0.5} /></div>
-              <div className="absolute" style={{ top: '40%', left: '5%' }}><CuteSheep size={65} delay={0.3} /></div>
-              <div className="absolute" style={{ top: '38%', left: '78%' }}><CuteSheep size={55} delay={0.8} flip /></div>
-              <div className="absolute" style={{ top: '70%', left: '8%' }}><BabyCradle size={80} delay={0.6} /></div>
-              <div className="absolute" style={{ top: '75%', left: '40%' }}><MuslimBabyBoySeated size={70} delay={1} /></div>
-              <div className="absolute" style={{ top: '72%', left: '72%' }}><CuteSheep size={45} delay={1.2} /></div>
-            </div>
+        <div className="cover-overlay section-cover">
+          {/* Decorative elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+            <div className="absolute top-[10%] left-[5%]"><HotAirBalloon /></div>
+            <div className="absolute top-[20%] right-[8%]"><StorkSilhouette /></div>
+            <div className="absolute bottom-[25%] left-[10%]"><GiftBox delay={0.8} color="#C7CEEA" /></div>
+            <div className="absolute bottom-[30%] right-[12%]"><GiftBox delay={1.2} color="#FFDAC1" /></div>
+            <div className="absolute top-[50%] left-[50%] -translate-x-1/2"><GiftBox delay={1.6} color="#FFB7C5" /></div>
+            <div className="absolute top-[8%] left-[50%] -translate-x-1/2"><BabyMoon size={80} delay={0} /></div>
+            <div className="absolute bottom-[10%] left-[15%]"><IslamicLantern size={50} delay={0.5} /></div>
+            <div className="absolute top-[15%] right-[15%]"><FloatingStars size={60} delay={0.3} /></div>
+            <div className="absolute top-[45%] right-[20%]"><MuslimBabyBoy size={70} delay={0.8} /></div>
+            <div className="absolute" style={{ top: '8%', left: '10%' }}><MoonAndStars size={90} delay={0} /></div>
+            <div className="absolute" style={{ top: '5%', left: '75%' }}><IslamicStarPattern size={60} delay={0.5} /></div>
+            <div className="absolute" style={{ top: '40%', left: '5%' }}><CuteSheep size={65} delay={0.3} /></div>
+            <div className="absolute" style={{ top: '38%', left: '78%' }}><CuteSheep size={55} delay={0.8} flip /></div>
+            <div className="absolute" style={{ top: '70%', left: '8%' }}><BabyCradle size={80} delay={0.6} /></div>
+            <div className="absolute" style={{ top: '75%', left: '40%' }}><MuslimBabyBoySeated size={70} delay={1} /></div>
+            <div className="absolute" style={{ top: '72%', left: '72%' }}><CuteSheep size={45} delay={1.2} /></div>
+          </div>
 
+          {/* Card content — centered */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
             <motion.div
-              className="z-10 max-w-lg w-full flex flex-col items-center px-6 text-center"
+              className="w-full max-w-sm flex flex-col items-center text-center"
               initial={prefersReduced ? {} : { opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <motion.h2
-                className="font-headline italic text-primary text-lg mb-10 tracking-widest"
-                initial={prefersReduced ? {} : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-              >
+              <h2 className="font-headline italic text-primary text-lg mb-8 tracking-widest">
                 Bismillahirrahmanirrahim
-              </motion.h2>
+              </h2>
 
-              <motion.div
-                className="relative w-full aspect-[4/3] bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center justify-center border border-outline-variant/10 mb-10 overflow-hidden"
-                initial={prefersReduced ? {} : { scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 120, damping: 10, delay: 0.5 }}
-              >
+              <div className="relative w-full bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center mb-8 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-tertiary opacity-30" />
                 <BismillahCalligraphy size="md" color="#735c00" className="mb-6" />
-                <p className="font-body text-secondary text-sm max-w-[280px] leading-relaxed">
+                <p className="font-body text-secondary text-sm leading-relaxed">
                   Kami mengundang Anda untuk hadir dalam syukuran Aqiqah putri kami
                 </p>
-              </motion.div>
+              </div>
 
               <motion.button
                 onClick={handleOpen}
-                className="group relative bg-primary text-on-primary px-10 py-5 rounded-xl font-medium tracking-wide flex items-center gap-3 shadow-xl shadow-primary/20 cursor-pointer"
-                whileHover={prefersReduced ? {} : { scale: 1.08 }}
+                className="bg-primary text-on-primary px-10 py-4 rounded-xl font-medium tracking-wide flex items-center gap-3 shadow-xl cursor-pointer"
                 whileTap={prefersReduced ? {} : { scale: 0.95 }}
                 animate={prefersReduced ? {} : { scale: [1, 1.03, 1] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  Buka Undangan
-                  <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor" opacity="0.8">
-                    <rect x="0" y="0" width="18" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M0,0 L9,8 L18,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                </span>
-                <div className="absolute inset-0 rounded-xl border-2 border-on-primary/30 animate-[pulseRing_2s_infinite]" />
+                Buka Undangan
+                <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor" opacity="0.8">
+                  <rect x="0" y="0" width="18" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M0,0 L9,8 L18,0" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
               </motion.button>
             </motion.div>
-          </motion.section>
-        </>
+          </div>
+        </div>
       )}
     </AnimatePresence>
   );

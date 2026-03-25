@@ -3,8 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Aqiqah Rumaisha Qonita",
-  description:
-    "Undangan Syukuran Aqiqah putri Bapak Tri Rachmat Riski & Ibu Upita Anggunsuri",
+  description: "Undangan Syukuran Aqiqah putri Bapak Tri Rachmat Riski & Ibu Upita Anggunsuri",
 };
 
 export const viewport: Viewport = {
@@ -27,7 +26,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
-      <body className="min-h-screen">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

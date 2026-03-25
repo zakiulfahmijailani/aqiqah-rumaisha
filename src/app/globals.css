@@ -131,6 +131,10 @@
   100% { transform: translateY(100vh) translateX(80px) rotate(360deg); opacity: 0; }
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
@@ -139,12 +143,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* iOS-safe scroll lock: use fixed positioning instead of overflow:hidden */
-body.locked {
-  position: fixed;
-  width: 100%;
-  overflow-y: scroll;
-}
+/* NO scroll lock class — iOS handles this via cover overlay */
 
 .font-arabic {
   font-family: 'Amiri', serif;
@@ -190,3 +189,12 @@ body.locked {
 ::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 3px; }
 
 .clip-triangle { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+
+/* Cover overlay — sits on top, no body lock needed */
+.cover-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  touch-action: none;
+  -webkit-overflow-scrolling: auto;
+}

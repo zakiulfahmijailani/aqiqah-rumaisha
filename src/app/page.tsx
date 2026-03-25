@@ -14,6 +14,7 @@ import MusicPlayer from '@/components/MusicPlayer';
 import WishesSection from '@/components/WishesSection';
 import ClosingSection from '@/components/ClosingSection';
 import WaveDivider from '@/components/WaveDivider';
+import BottomNavBar from '@/components/BottomNavBar';
 
 export default function Home() {
   const [coverOpen, setCoverOpen] = useState(false);
@@ -26,8 +27,9 @@ export default function Home() {
       <CoverSection onOpen={() => setCoverOpen(true)} />
 
       {/* Main content — visible after cover opens */}
-      <main className="relative z-10">
+      <main className="relative z-10 pb-20">
         <section
+          id="beranda"
           className="px-6 py-20 text-center relative z-10"
           style={{ background: 'linear-gradient(135deg, #FFF5F7, #F0FFF4)' }}
         >
@@ -68,35 +70,35 @@ export default function Home() {
           </div>
         </section>
         {/* Names Section */}
-        <section>
+        <section id="nama">
           <BabyNamesSection />
         </section>
 
         <WaveDivider fillColor="#FFF8E7" variant="sine" />
 
         {/* Event Details Section */}
-        <section>
+        <section id="acara">
           <EventDetailsSection />
         </section>
 
         <WaveDivider fillColor="#E8F8FF" variant="hill" />
 
         {/* Maps Section */}
-        <section>
+        <section id="lokasi">
           <MapsSection />
         </section>
 
         <WaveDivider fillColor="#e8f5f0" variant="double" />
 
         {/* RSVP Section */}
-        <section>
+        <section id="rsvp">
           <RSVPSection />
         </section>
 
         <WaveDivider fillColor="#F5F0FF" variant="sine" />
 
         {/* Wishes Section */}
-        <section>
+        <section id="doa">
           <WishesSection />
         </section>
 
@@ -110,6 +112,7 @@ export default function Home() {
 
       {/* Music player FAB */}
       {coverOpen && <MusicPlayer />}
+      <BottomNavBar visible={coverOpen} />
     </>
   );
 }

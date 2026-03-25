@@ -1,4 +1,6 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import ScrollProgressBar from '@/components/ScrollProgressBar';
@@ -9,7 +11,6 @@ import MapsSection from '@/components/MapsSection';
 import RSVPSection from '@/components/RSVPSection';
 import BismillahCalligraphy from '@/components/BismillahCalligraphy';
 import { MuslimBabyBoy, BabyQuran, FloatingBalloons } from '@/components/BabyIllustrations';
-
 import MusicPlayer from '@/components/MusicPlayer';
 import WishesSection from '@/components/WishesSection';
 import ClosingSection from '@/components/ClosingSection';
@@ -26,41 +27,36 @@ export default function Home() {
 
       <CoverSection onOpen={() => setCoverOpen(true)} />
 
-      {/* Main content — visible after cover opens */}
       <main className="relative z-10 pb-20">
         <section
           id="beranda"
           className="px-6 py-20 text-center relative z-10"
-          style={{ background: 'linear-gradient(135deg, #FFF5F7, #F0FFF4)' }}
+          style={{ background: 'linear-gradient(135deg, #FFF5F7, #FFF0F5)' }}
         >
-          {/* Default Bismillah Calligraphy */}
           <BismillahCalligraphy size="lg" color="#735c00" className="mb-8" />
 
-          {/* Baby Illustrations */}
           <div className="flex justify-center items-end gap-6 my-6 opacity-70">
             <FloatingBalloons size={60} delay={0} />
             <MuslimBabyBoy size={80} delay={0.4} />
             <BabyQuran size={55} delay={0.8} />
           </div>
 
-          {/* Hadith */}
           <blockquote className="italic text-gray-500 text-sm md:text-base mb-8 max-w-md mx-auto">
-            "Setiap anak tergadai dengan aqiqahnya."
+            &ldquo;Setiap anak tergadai dengan aqiqahnya.&rdquo;
             <br />
             <span className="text-xs not-italic">— HR. Ahmad, Abu Dawud, At-Tirmidzi</span>
           </blockquote>
 
-          {/* Main text */}
           <div className="max-w-xl mx-auto text-gray-600 text-sm md:text-base leading-relaxed space-y-4">
             <p>
               Dengan penuh rasa syukur kehadirat Allah Subhanahu wa Ta&apos;ala
               atas segala nikmat dan karunia-Nya, kami mengumumkan
-              dengan penuh kebahagiaan kelahiran putra kami.
+              dengan penuh kebahagiaan kelahiran putri kami.
             </p>
             <p>
               Sebagai wujud syukur dan mengikuti sunnah Rasulullah ﷺ,
               kami akan menyelenggarakan syukuran Aqiqah untuk
-              putra tercinta kami.
+              putri tercinta kami.
             </p>
             <p>
               Dengan rendah hati, kami mengundang Bapak/Ibu/Saudara/i
@@ -69,48 +65,42 @@ export default function Home() {
             </p>
           </div>
         </section>
-        {/* Names Section */}
+
         <section id="nama">
           <BabyNamesSection />
         </section>
 
         <WaveDivider fillColor="#FFF8E7" variant="sine" />
 
-        {/* Event Details Section */}
         <section id="acara">
           <EventDetailsSection />
         </section>
 
-        <WaveDivider fillColor="#E8F8FF" variant="hill" />
+        <WaveDivider fillColor="#FFF0F5" variant="hill" />
 
-        {/* Maps Section */}
         <section id="lokasi">
           <MapsSection />
         </section>
 
-        <WaveDivider fillColor="#e8f5f0" variant="double" />
+        <WaveDivider fillColor="#FFF0F5" variant="double" />
 
-        {/* RSVP Section */}
         <section id="rsvp">
           <RSVPSection />
         </section>
 
-        <WaveDivider fillColor="#F5F0FF" variant="sine" />
+        <WaveDivider fillColor="#FFF0F5" variant="sine" />
 
-        {/* Wishes Section */}
         <section id="doa">
           <WishesSection />
         </section>
 
         <WaveDivider fillColor="#FFF5F7" variant="hill" />
 
-        {/* Closing Section */}
         <section>
           <ClosingSection />
         </section>
       </main>
 
-      {/* Music player FAB */}
       {coverOpen && <MusicPlayer />}
       <BottomNavBar visible={coverOpen} />
     </>

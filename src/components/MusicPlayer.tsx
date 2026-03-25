@@ -1,9 +1,8 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
-/* ── Floating Music Notes ─────────────────── */
 function FloatingNotes({ playing }: { playing: boolean }) {
   const [notes, setNotes] = useState<{ id: number; char: string; x: number }[]>([]);
   const counter = useRef(0);
@@ -11,7 +10,7 @@ function FloatingNotes({ playing }: { playing: boolean }) {
   useEffect(() => {
     if (!playing) return;
     const interval = setInterval(() => {
-      const chars = ['♪', '♫', '♬', '♩'];
+      const chars = ['\u266a', '\u266b', '\u266c', '\u2669'];
       counter.current += 1;
       setNotes((prev) => [
         ...prev.slice(-5),
@@ -39,7 +38,6 @@ function FloatingNotes({ playing }: { playing: boolean }) {
   );
 }
 
-/* ── Sound Wave Bars ──────────────────────── */
 function SoundWaveBars({ playing }: { playing: boolean }) {
   const delays = [0, 0.1, 0.2, 0.3, 0.4];
   const durations = [0.5, 0.6, 0.4, 0.7, 0.5];
@@ -57,51 +55,41 @@ function SoundWaveBars({ playing }: { playing: boolean }) {
   );
 }
 
-/* ── Main Component ───────────────────────── */
 export default function MusicPlayer() {
   const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const prefersReduced = useReducedMotion();
-  const hasInteracted = useRef(false);
 
-  // Autoplay: coba jalankan audio saat komponen mount
+  // iOS: buat audio element secara manual, jangan pakai JSX <audio>
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    const audio = new Audio('/audio/maryam.mp4');
+    audio.loop = true;
+    audio.preload = 'none'; // iOS: jangan preload otomatis
+    audioRef.current = audio;
 
-    // Coba autoplay langsung
-    audio.play()
-      .then(() => {
-        setPlaying(true);
-        hasInteracted.current = true;
-      })
-      .catch(() => {
-        // Browser blokir autoplay — tunggu interaksi pertama user
-        const handleFirstInteraction = () => {
-          if (hasInteracted.current) return;
-          hasInteracted.current = true;
-          audio.play().then(() => setPlaying(true)).catch(() => { });
-          document.removeEventListener('click', handleFirstInteraction);
-          document.removeEventListener('touchstart', handleFirstInteraction);
-          document.removeEventListener('keydown', handleFirstInteraction);
-        };
-
-        document.addEventListener('click', handleFirstInteraction);
-        document.addEventListener('touchstart', handleFirstInteraction);
-        document.addEventListener('keydown', handleFirstInteraction);
-      });
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
   }, []);
 
-  const toggle = () => {
+  const toggle = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
     if (playing) {
       audio.pause();
+      setPlaying(false);
     } else {
-      audio.play();
+      // iOS requires play() to be called directly from a user gesture
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setPlaying(true))
+          .catch(() => setPlaying(false));
+      }
     }
-    setPlaying((prev) => !prev);
-  };
+  }, [playing]);
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -109,8 +97,8 @@ export default function MusicPlayer() {
         onClick={toggle}
         className="relative w-12 h-12 rounded-full bg-white/80 backdrop-blur shadow-lg flex items-center justify-center"
         whileTap={{ scale: 0.9 }}
+        aria-label={playing ? 'Pause musik' : 'Putar musik'}
       >
-        {/* Glow halo */}
         {playing && (
           <motion.div
             className="absolute inset-0 rounded-full bg-primary/20"
@@ -119,7 +107,6 @@ export default function MusicPlayer() {
           />
         )}
 
-        {/* Icon */}
         {playing ? (
           <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
             <rect x="6" y="4" width="4" height="16" />
@@ -131,22 +118,12 @@ export default function MusicPlayer() {
           </svg>
         )}
 
-        {/* Sound wave bars */}
         <div className="absolute -top-6">
           <SoundWaveBars playing={playing} />
         </div>
 
-        {/* Floating notes */}
         {playing && !prefersReduced && <FloatingNotes playing={playing} />}
       </motion.button>
-
-      {/* Audio element */}
-      <audio
-        ref={audioRef}
-        src="/audio/maryam.mp4"
-        loop
-        preload="auto"
-      />
     </div>
   );
 }

@@ -16,6 +16,7 @@ import WishesSection from '@/components/WishesSection';
 import ClosingSection from '@/components/ClosingSection';
 import WaveDivider from '@/components/WaveDivider';
 import BottomNavBar from '@/components/BottomNavBar';
+import CreditSection from '@/components/CreditSection';
 
 export default function Home() {
   const [coverOpen, setCoverOpen] = useState(false);
@@ -65,6 +66,7 @@ export default function Home() {
         <section id="doa"><WishesSection /></section>
         <WaveDivider fillColor="#FFF5F7" variant="hill" />
         <section><ClosingSection /></section>
+        <CreditSection />
       </main>
 
       {coverOpen && <MusicPlayer />}

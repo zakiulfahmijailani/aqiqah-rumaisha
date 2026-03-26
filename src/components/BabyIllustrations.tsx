@@ -9,7 +9,7 @@ interface IllustrationProps {
   className?: string;
 }
 
-/* ── Muslim Baby Girl (Muslimah) ────────────────── */
+/* ── Muslim Baby Girl (Muslimah) — no face ───────── */
 export function MuslimBabyBoy({ size = 60, delay = 0, className = '' }: IllustrationProps) {
   const reduced = useReducedMotion();
   return (
@@ -38,7 +38,7 @@ export function MuslimBabyBoy({ size = 60, delay = 0, className = '' }: Illustra
         {/* Neck */}
         <rect x="44" y="46" width="12" height="10" rx="4" fill="#FFDAC1" />
 
-        {/* Head */}
+        {/* Head — blank, no face */}
         <circle cx="50" cy="33" r="20" fill="#FFDAC1" />
 
         {/* Hijab outer — covers top & sides of head */}
@@ -53,22 +53,8 @@ export function MuslimBabyBoy({ size = 60, delay = 0, className = '' }: Illustra
         <path d="M70,33 Q78,40 76,56 Q68,52 64,50 Q67,42 70,33 Z"
           fill="#FFB7C5" stroke="#FF8FAB" strokeWidth="1" />
 
-        {/* Face — skin visible in oval */}
+        {/* Face oval — skin only, no features */}
         <ellipse cx="50" cy="33" rx="14" ry="16" fill="#FFDAC1" />
-
-        {/* Eyes */}
-        <circle cx="44" cy="30" r="2" fill="#516161" />
-        <circle cx="56" cy="30" r="2" fill="#516161" />
-        {/* Eye shine */}
-        <circle cx="45" cy="29" r="0.8" fill="white" />
-        <circle cx="57" cy="29" r="0.8" fill="white" />
-
-        {/* Smile */}
-        <path d="M44,37 Q50,42 56,37" fill="none" stroke="#c07060" strokeWidth="1.5" strokeLinecap="round" />
-
-        {/* Rosy cheeks */}
-        <circle cx="40" cy="35" r="4" fill="#FFB7C5" opacity="0.4" />
-        <circle cx="60" cy="35" r="4" fill="#FFB7C5" opacity="0.4" />
 
         {/* Hijab inner border (forehead line) */}
         <path d="M36,22 Q50,16 64,22" fill="none" stroke="#FF8FAB" strokeWidth="1" opacity="0.5" />
@@ -104,37 +90,12 @@ export function BabyMoon({ size = 60, delay = 0, className = '' }: IllustrationP
 export function FloatingStars({ size = 60, delay = 0, className = '' }: IllustrationProps) {
   const reduced = useReducedMotion();
   const starPath = "M50,0 Q50,45 100,50 Q50,55 50,100 Q50,55 0,50 Q50,45 50,0 Z";
-
   return (
     <div className={`relative ${className}`} style={{ width: size, height: size }}>
       <svg viewBox="0 0 100 100" width="100%" height="100%">
-        <motion.path
-          d={starPath}
-          fill="#FFD700"
-          opacity="1"
-          transform="translate(10, 10) scale(0.4)"
-          style={{ transformOrigin: 'center' }}
-          animate={reduced ? {} : { scale: [0.4, 0.48, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity, delay }}
-        />
-        <motion.path
-          d={starPath}
-          fill="#FFD700"
-          opacity="0.6"
-          transform="translate(60, 20) scale(0.25)"
-          style={{ transformOrigin: 'center' }}
-          animate={reduced ? {} : { scale: [0.25, 0.3, 0.25] }}
-          transition={{ duration: 2, repeat: Infinity, delay: delay + 0.4 }}
-        />
-        <motion.path
-          d={starPath}
-          fill="#FFD700"
-          opacity="0.8"
-          transform="translate(30, 60) scale(0.35)"
-          style={{ transformOrigin: 'center' }}
-          animate={reduced ? {} : { scale: [0.35, 0.42, 0.35] }}
-          transition={{ duration: 2, repeat: Infinity, delay: delay + 0.8 }}
-        />
+        <motion.path d={starPath} fill="#FFD700" opacity="1" transform="translate(10, 10) scale(0.4)" style={{ transformOrigin: 'center' }} animate={reduced ? {} : { scale: [0.4, 0.48, 0.4] }} transition={{ duration: 2, repeat: Infinity, delay }} />
+        <motion.path d={starPath} fill="#FFD700" opacity="0.6" transform="translate(60, 20) scale(0.25)" style={{ transformOrigin: 'center' }} animate={reduced ? {} : { scale: [0.25, 0.3, 0.25] }} transition={{ duration: 2, repeat: Infinity, delay: delay + 0.4 }} />
+        <motion.path d={starPath} fill="#FFD700" opacity="0.8" transform="translate(30, 60) scale(0.35)" style={{ transformOrigin: 'center' }} animate={reduced ? {} : { scale: [0.35, 0.42, 0.35] }} transition={{ duration: 2, repeat: Infinity, delay: delay + 0.8 }} />
       </svg>
     </div>
   );
@@ -211,31 +172,19 @@ export function FloatingBalloons({ size = 60, delay = 0, className = '' }: Illus
   return (
     <div className={`relative ${className}`} style={{ width: size * 1.5, height: size * 1.5 }}>
       <svg viewBox="0 0 150 150" width="100%" height="100%">
-        <motion.g
-          style={{ transformOrigin: '50% 120px' }}
-          animate={reduced ? {} : { rotate: [-3, 3, -3] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay }}
-        >
+        <motion.g style={{ transformOrigin: '50% 120px' }} animate={reduced ? {} : { rotate: [-3, 3, -3] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay }}>
           <path d="M40,50 Q45,85 75,120" fill="none" stroke="#e0e0e0" strokeWidth="1.5" />
           <polygon points="40,50 35,55 45,55" fill="#FFB7C5" />
           <circle cx="40" cy="30" r="20" fill="#FFB7C5" opacity="0.9" />
           <ellipse cx="33" cy="23" rx="4" ry="8" fill="#ffffff" opacity="0.3" transform="rotate(-30 33 23)" />
         </motion.g>
-        <motion.g
-          style={{ transformOrigin: '50% 120px' }}
-          animate={reduced ? {} : { rotate: [-2, 4, -2] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.2 }}
-        >
+        <motion.g style={{ transformOrigin: '50% 120px' }} animate={reduced ? {} : { rotate: [-2, 4, -2] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.2 }}>
           <path d="M75,30 Q75,75 75,120" fill="none" stroke="#e0e0e0" strokeWidth="1.5" />
           <polygon points="75,30 70,35 80,35" fill="#C7CEEA" />
           <circle cx="75" cy="12" r="18" fill="#C7CEEA" opacity="0.9" />
           <ellipse cx="69" cy="6" rx="3" ry="6" fill="#ffffff" opacity="0.3" transform="rotate(-30 69 6)" />
         </motion.g>
-        <motion.g
-          style={{ transformOrigin: '50% 120px' }}
-          animate={reduced ? {} : { rotate: [4, -4, 4] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.4 }}
-        >
+        <motion.g style={{ transformOrigin: '50% 120px' }} animate={reduced ? {} : { rotate: [4, -4, 4] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.4 }}>
           <path d="M110,40 Q100,80 75,120" fill="none" stroke="#e0e0e0" strokeWidth="1.5" />
           <polygon points="110,40 105,45 115,45" fill="#B5EAD7" />
           <circle cx="110" cy="22" r="18" fill="#B5EAD7" opacity="0.9" />

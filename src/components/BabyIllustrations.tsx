@@ -9,6 +9,7 @@ interface IllustrationProps {
   className?: string;
 }
 
+/* ── Muslim Baby Girl (Muslimah) ────────────────── */
 export function MuslimBabyBoy({ size = 60, delay = 0, className = '' }: IllustrationProps) {
   const reduced = useReducedMotion();
   return (
@@ -19,17 +20,62 @@ export function MuslimBabyBoy({ size = 60, delay = 0, className = '' }: Illustra
       style={{ width: size, height: size * 1.2 }}
     >
       <svg viewBox="0 0 100 120" width="100%" height="100%">
-        {/* Shadow/Base */}
-        <ellipse cx="50" cy="115" rx="35" ry="5" fill="#516161" opacity="0.1" />
-        {/* Jubah Body */}
-        <path d="M30,50 Q20,110 25,115 L75,115 Q80,110 70,50 Z" fill="#f0f0f0" stroke="#C7CEEA" strokeWidth="2" strokeLinejoin="round" />
+        {/* Shadow */}
+        <ellipse cx="50" cy="116" rx="30" ry="4" fill="#516161" opacity="0.1" />
+
+        {/* Gamis / Dress body — soft pink */}
+        <path d="M28,52 Q18,112 22,116 L78,116 Q82,112 72,52 Z"
+          fill="#FFB7C5" stroke="#FF8FAB" strokeWidth="1.5" strokeLinejoin="round" />
+
+        {/* Dress flare at bottom */}
+        <path d="M22,116 Q35,108 50,116 Q65,108 78,116"
+          fill="none" stroke="#FF8FAB" strokeWidth="1" opacity="0.5" />
+
         {/* Hands */}
-        <ellipse cx="28" cy="70" rx="8" ry="12" fill="#FFDAC1" transform="rotate(15 28 70)" />
-        <ellipse cx="72" cy="70" rx="8" ry="12" fill="#FFDAC1" transform="rotate(-15 72 70)" />
+        <ellipse cx="26" cy="72" rx="7" ry="11" fill="#FFDAC1" transform="rotate(15 26 72)" />
+        <ellipse cx="74" cy="72" rx="7" ry="11" fill="#FFDAC1" transform="rotate(-15 74 72)" />
+
+        {/* Neck */}
+        <rect x="44" y="46" width="12" height="10" rx="4" fill="#FFDAC1" />
+
         {/* Head */}
-        <circle cx="50" cy="35" r="22" fill="#FFDAC1" />
-        {/* Peci (Kopiah) */}
-        <path d="M30,22 Q35,8 50,8 Q65,8 70,22 Z" fill="#ffffff" stroke="#C7CEEA" strokeWidth="2" strokeLinejoin="round" />
+        <circle cx="50" cy="33" r="20" fill="#FFDAC1" />
+
+        {/* Hijab outer — covers top & sides of head */}
+        <path d="M30,33 Q30,10 50,10 Q70,10 70,33 Q70,50 50,54 Q30,50 30,33 Z"
+          fill="#FFB7C5" stroke="#FF8FAB" strokeWidth="1.5" />
+
+        {/* Hijab side drape left */}
+        <path d="M30,33 Q22,40 24,56 Q32,52 36,50 Q33,42 30,33 Z"
+          fill="#FFB7C5" stroke="#FF8FAB" strokeWidth="1" />
+
+        {/* Hijab side drape right */}
+        <path d="M70,33 Q78,40 76,56 Q68,52 64,50 Q67,42 70,33 Z"
+          fill="#FFB7C5" stroke="#FF8FAB" strokeWidth="1" />
+
+        {/* Face — skin visible in oval */}
+        <ellipse cx="50" cy="33" rx="14" ry="16" fill="#FFDAC1" />
+
+        {/* Eyes */}
+        <circle cx="44" cy="30" r="2" fill="#516161" />
+        <circle cx="56" cy="30" r="2" fill="#516161" />
+        {/* Eye shine */}
+        <circle cx="45" cy="29" r="0.8" fill="white" />
+        <circle cx="57" cy="29" r="0.8" fill="white" />
+
+        {/* Smile */}
+        <path d="M44,37 Q50,42 56,37" fill="none" stroke="#c07060" strokeWidth="1.5" strokeLinecap="round" />
+
+        {/* Rosy cheeks */}
+        <circle cx="40" cy="35" r="4" fill="#FFB7C5" opacity="0.4" />
+        <circle cx="60" cy="35" r="4" fill="#FFB7C5" opacity="0.4" />
+
+        {/* Hijab inner border (forehead line) */}
+        <path d="M36,22 Q50,16 64,22" fill="none" stroke="#FF8FAB" strokeWidth="1" opacity="0.5" />
+
+        {/* Small flower on hijab */}
+        <circle cx="50" cy="13" r="3" fill="#FFD700" opacity="0.7" />
+        <circle cx="50" cy="13" r="1.5" fill="white" opacity="0.6" />
       </svg>
     </motion.div>
   );
@@ -45,13 +91,9 @@ export function BabyMoon({ size = 60, delay = 0, className = '' }: IllustrationP
       style={{ width: size, height: size, transformOrigin: 'center' }}
     >
       <svg viewBox="0 0 100 100" width="100%" height="100%">
-        {/* Crescent Moon */}
         <path d="M80,50 A40,40 0 1,1 50,10 A30,30 0 1,0 75,45 Z" fill="#FFD700" opacity="0.85" />
-        {/* Sleeping Baby on Moon */}
         <g transform="translate(15, 55) rotate(-20)">
-          {/* Blanket */}
           <ellipse cx="35" cy="15" rx="20" ry="12" fill="#B5EAD7" />
-          {/* Head */}
           <circle cx="15" cy="15" r="10" fill="#FFDAC1" />
         </g>
       </svg>
@@ -61,12 +103,11 @@ export function BabyMoon({ size = 60, delay = 0, className = '' }: IllustrationP
 
 export function FloatingStars({ size = 60, delay = 0, className = '' }: IllustrationProps) {
   const reduced = useReducedMotion();
-  const starPath = "M50,0 Q50,45 100,50 Q50,55 50,100 Q50,55 0,50 Q50,45 50,0 Z"; // 4-pointed star base
+  const starPath = "M50,0 Q50,45 100,50 Q50,55 50,100 Q50,55 0,50 Q50,45 50,0 Z";
 
   return (
     <div className={`relative ${className}`} style={{ width: size, height: size }}>
       <svg viewBox="0 0 100 100" width="100%" height="100%">
-        {/* We use standard nested motion elements for individual pulses */}
         <motion.path
           d={starPath}
           fill="#FFD700"
@@ -74,7 +115,7 @@ export function FloatingStars({ size = 60, delay = 0, className = '' }: Illustra
           transform="translate(10, 10) scale(0.4)"
           style={{ transformOrigin: 'center' }}
           animate={reduced ? {} : { scale: [0.4, 0.48, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity, delay: delay }}
+          transition={{ duration: 2, repeat: Infinity, delay }}
         />
         <motion.path
           d={starPath}
@@ -109,9 +150,7 @@ export function BabyPrayingHands({ size = 60, delay = 0, className = '' }: Illus
       style={{ width: size, height: size }}
     >
       <svg viewBox="0 0 100 100" width="100%" height="100%">
-        {/* Left hand */}
         <path d="M30,80 Q20,50 45,30 Q50,35 40,65 Q35,80 30,80 Z" fill="#FFDAC1" stroke="#735c00" strokeWidth="1" strokeOpacity="0.3" />
-        {/* Right hand */}
         <path d="M70,80 Q80,50 55,30 Q50,35 60,65 Q65,80 70,80 Z" fill="#FFDAC1" stroke="#735c00" strokeWidth="1" strokeOpacity="0.3" />
       </svg>
     </motion.div>
@@ -128,18 +167,12 @@ export function IslamicLantern({ size = 60, delay = 0, className = '' }: Illustr
       style={{ width: size, height: size * 1.5, transformOrigin: 'top center' }}
     >
       <svg viewBox="0 0 100 150" width="100%" height="100%">
-        {/* Top ring/chain */}
         <circle cx="50" cy="15" r="5" fill="none" stroke="#735c00" strokeWidth="2" />
         <line x1="50" y1="20" x2="50" y2="30" stroke="#735c00" strokeWidth="2" />
-        {/* Top cap */}
         <path d="M50,30 L30,50 L70,50 Z" fill="#FFD700" stroke="#735c00" strokeWidth="2" strokeLinejoin="round" />
-        {/* Body */}
         <polygon points="30,50 70,50 60,110 40,110" fill="#FFD700" fillOpacity="0.7" stroke="#735c00" strokeWidth="2" strokeLinejoin="round" />
-        {/* Bottom cap */}
         <polygon points="40,110 60,110 50,130" fill="#FFD700" stroke="#735c00" strokeWidth="2" strokeLinejoin="round" />
-        {/* Glow */}
-        <circle cx="50" cy="80" r="15" fill="#FFF9C4" opacity="0.6" filter="blur(2px)" />
-        {/* Decor lines */}
+        <circle cx="50" cy="80" r="15" fill="#FFF9C4" opacity="0.6" />
         <line x1="37" y1="70" x2="63" y2="70" stroke="#735c00" strokeWidth="1" opacity="0.5" />
         <line x1="35" y1="90" x2="65" y2="90" stroke="#735c00" strokeWidth="1" opacity="0.5" />
         <polygon points="50,75 55,80 50,85 45,80" fill="none" stroke="#735c00" strokeWidth="1" opacity="0.6" />
@@ -158,22 +191,14 @@ export function BabyQuran({ size = 60, delay = 0, className = '' }: Illustration
       style={{ width: size * 1.2, height: size }}
     >
       <svg viewBox="0 0 120 100" width="100%" height="100%">
-        {/* Stand (Rehal) base */}
         <path d="M20,80 L50,60 L80,80 L90,75 L60,50 L30,75 Z" fill="#735c00" opacity="0.4" />
-        {/* Left cover */}
         <path d="M60,55 L20,40 L30,20 L60,45 Z" fill="#516161" />
-        {/* Right cover */}
         <path d="M60,55 L100,40 L90,20 L60,45 Z" fill="#516161" />
-        {/* Left pages */}
         <path d="M60,52 L24,39 L32,22 L60,42 Z" fill="#FFF9F0" />
-        {/* Right pages */}
         <path d="M60,52 L96,39 L88,22 L60,42 Z" fill="#FFF9F0" />
-        {/* Bookmark ribbon */}
         <path d="M60,45 L55,70 L60,65 L65,70 Z" fill="#FFB7C5" />
-        {/* Text lines left */}
         <line x1="35" y1="30" x2="52" y2="36" stroke="#C7CEEA" strokeWidth="1.5" strokeLinecap="round" />
         <line x1="32" y1="34" x2="54" y2="42" stroke="#C7CEEA" strokeWidth="1.5" strokeLinecap="round" />
-        {/* Text lines right */}
         <line x1="85" y1="30" x2="68" y2="36" stroke="#C7CEEA" strokeWidth="1.5" strokeLinecap="round" />
         <line x1="88" y1="34" x2="66" y2="42" stroke="#C7CEEA" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
@@ -186,7 +211,6 @@ export function FloatingBalloons({ size = 60, delay = 0, className = '' }: Illus
   return (
     <div className={`relative ${className}`} style={{ width: size * 1.5, height: size * 1.5 }}>
       <svg viewBox="0 0 150 150" width="100%" height="100%">
-        {/* String 1 & Balloon 1 */}
         <motion.g
           style={{ transformOrigin: '50% 120px' }}
           animate={reduced ? {} : { rotate: [-3, 3, -3] }}
@@ -197,8 +221,6 @@ export function FloatingBalloons({ size = 60, delay = 0, className = '' }: Illus
           <circle cx="40" cy="30" r="20" fill="#FFB7C5" opacity="0.9" />
           <ellipse cx="33" cy="23" rx="4" ry="8" fill="#ffffff" opacity="0.3" transform="rotate(-30 33 23)" />
         </motion.g>
-        
-        {/* String 2 & Balloon 2 */}
         <motion.g
           style={{ transformOrigin: '50% 120px' }}
           animate={reduced ? {} : { rotate: [-2, 4, -2] }}
@@ -209,8 +231,6 @@ export function FloatingBalloons({ size = 60, delay = 0, className = '' }: Illus
           <circle cx="75" cy="12" r="18" fill="#C7CEEA" opacity="0.9" />
           <ellipse cx="69" cy="6" rx="3" ry="6" fill="#ffffff" opacity="0.3" transform="rotate(-30 69 6)" />
         </motion.g>
-
-        {/* String 3 & Balloon 3 */}
         <motion.g
           style={{ transformOrigin: '50% 120px' }}
           animate={reduced ? {} : { rotate: [4, -4, 4] }}
